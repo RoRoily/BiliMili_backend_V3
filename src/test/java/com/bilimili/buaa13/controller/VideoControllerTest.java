@@ -114,7 +114,7 @@ public class VideoControllerTest {
         responseResult.setData("cumulativeVideosForVisitorP");
         responseResult.setMessage("获取成功");
         when(videoController.cumulativeVideosForVisitor("4")).thenReturn(responseResult);
-        mockMvc.perform(get("video/cumulative/visitor")
+        mockMvc.perform(get("/video/cumulative/visitor")
                         .param("vids", "4"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("code").value("200"))

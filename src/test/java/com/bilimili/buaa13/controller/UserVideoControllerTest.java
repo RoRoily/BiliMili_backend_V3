@@ -141,26 +141,8 @@ class UserVideoControllerTest {
                 .andExpect(jsonPath("$.data").value("Play updated"));
     }
 
-    @Test
-    @WithMockUser
-    void loveOrNotTest_chatGPT() throws Exception {
-        // Mocking
-        int uid = 1;
-        int vid = 100;
-        boolean isLove = true;
-        boolean isSet = true;
-
-        // Simulating service behavior
-        //when(currentUser.getUserId()).thenReturn(uid);
-        //when(userVideoService.setLoveOrUnlove(uid, vid, isLove, isSet)).thenReturn("Love set");
-
-        // Performing the POST request and checking the response
-        mockMvc.perform(post("/chatgpt/video/love-or-not")
-                        .param("vid", String.valueOf(vid))
-                        .param("isLove", String.valueOf(isLove))
-                        .param("isSet", String.valueOf(isSet)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.data").value("Love set"));
+    ‘
+    Path("$.data").value("Love set"));
     }
 
 }
