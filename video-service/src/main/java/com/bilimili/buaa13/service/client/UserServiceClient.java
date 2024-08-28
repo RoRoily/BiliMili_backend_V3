@@ -21,8 +21,6 @@ public interface UserServiceClient {
     @GetMapping("/user/{uid}")
     UserDTO getUserById(@PathVariable("uid") Integer uid);
 
-    @PostMapping("/user/updateUserVideo")
-    ResponseEntity<String> updateUserVideo(@RequestBody UserVideo userVideo);
 
     @PostMapping("/user/currentUser/getId")
     Integer getCurrentUserId();

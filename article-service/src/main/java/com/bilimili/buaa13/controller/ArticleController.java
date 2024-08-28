@@ -5,16 +5,14 @@ import com.aliyun.oss.model.OSSObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bilimili.buaa13.entity.Article;
 import com.bilimili.buaa13.entity.ResponseResult;
+import com.bilimili.buaa13.entity.User;
 import com.bilimili.buaa13.entity.Video;
-import com.bilimili.buaa13.im.handler.NoticeHandler;
+import com.bilimili.buaa13.entity.Favorite;
 import com.bilimili.buaa13.mapper.ArticleMapper;
 import com.bilimili.buaa13.mapper.CritiqueMapper;
 import com.bilimili.buaa13.service.article.ArticleService;
-import com.bilimili.buaa13.service.category.CategoryService;
-import com.bilimili.buaa13.service.user.UserService;
-import com.bilimili.buaa13.service.video.FavoriteVideoService;
-import com.bilimili.buaa13.service.video.VideoReviewService;
-import com.bilimili.buaa13.service.video.VideoStatusService;
+import com.bilimili.buaa13.service.client.UserArticleClient;
+import com.bilimili.buaa13.service.client.VideoArticleClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -32,10 +30,10 @@ public class ArticleController {
     private OSS ossClient;
 
     @Autowired
-    private UserMapper userMapper;
+    private UserArticleClient userArticleClient;
 
     @Autowired
-    private FavoriteVideoMapper favoriteVideoMapper;
+    private VideoArticleClient videoArticleClient;
 
     @Autowired
     private CritiqueMapper critiqueMapper;
@@ -44,14 +42,7 @@ public class ArticleController {
     @Autowired
     private ArticleService articleService;
 
-    @Autowired
-    private VideoStatusMapper videoStatusMapper;
 
-    @Autowired
-    private FavoriteMapper favoriteMapper;
-
-    @Autowired
-    private FavoriteVideoService favoriteVideoService;
 
     @Autowired
     private ArticleMapper articleMapper;
@@ -114,7 +105,7 @@ public class ArticleController {
                 Article article = articleMapper.selectOne(queryWrapper);
                 System.out.println("Article =" + article.getAid());
                 Integer up_id = article.getUid();
-                NoticeHandler.send(up_id,aid);
+                //NoticeHandler.send(up_id,aid);
             }
             return responseResult;
         } catch (Exception e) {
@@ -194,9 +185,13 @@ public class ArticleController {
             map.put("coverUrl", article.getCoverUrl());
             map.put("content", content.toString());
             map.put("title", article.getTitle());
-            QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
-            userQueryWrapper.eq("uid", article.getUid());
-            User user = userMapper.selectOne(userQueryWrapper);
+            User user = userArticleClient.getUserById(article.getUid());
+            /**
+             *
+             * QueryWrapper<User> userQueryWrapper = new QueryWrapper<>();
+             *             userQueryWrapper.eq("uid", article.getUid());
+             *             User user = userMapper.selectOne(userQueryWrapper);
+             * **/
             map.put("user", user);
             responseResult.setData(map);
             responseResult.setCode(200);
