@@ -22,6 +22,7 @@
         <module>gateway_service</module>
         <module>user-service</module>
         <module>video-service</module>
+        <module>article-service</module>
     </modules>
     <properties>
         <java.version>17</java.version>

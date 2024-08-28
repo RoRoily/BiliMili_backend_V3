@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@RestController
+@RestController("/video")
 public class CommentController {
     @Autowired
     private CommentService commentService;

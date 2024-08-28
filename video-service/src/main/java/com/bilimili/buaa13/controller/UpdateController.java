@@ -1,9 +1,10 @@
 package com.bilimili.buaa13.controller;
 
+import com.bilimili.buaa13.entity.CommentTree;
 import com.bilimili.buaa13.entity.ResponseResult;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.comment.CommentService;
 import com.bilimili.buaa13.tools.RedisTool;
-import com.sun.source.doctree.CommentTree;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ public class UpdateController {
     private CommentService commentService;
 
     @Autowired
-    private CurrentUser currentUser;
+    private UserServiceClient userServiceClient;
     @Autowired
     private RedisTool redisTool;
 
@@ -35,13 +36,12 @@ public class UpdateController {
             @RequestParam("parent_id") Integer parentId,
             @RequestParam("to_user_id") Integer toUserId,
             @RequestParam("content") String content ) {
-        return getUpdateResponseResult(vid, rootId, parentId, toUserId, content, ommentService);
+        Integer uid = userServiceClient.getCurrentUserId();
+        return getUpdateResponseResult(vid, rootId, parentId, toUserId, content, uid, commentService);
     }
 
     @NotNull
-    private ResponseResult getUpdateResponseResult(@RequestParam("vid") Integer vid, @RequestParam("root_id") Integer rootId, @RequestParam("parent_id") Integer parentId, @RequestParam("to_user_id") Integer toUserId, @RequestParam("content") String content, CurrentUser currentUser, CommentService commentService) {
-        Integer uid = currentUser.getUserId();
-
+    private ResponseResult getUpdateResponseResult(@RequestParam("vid") Integer vid, @RequestParam("root_id") Integer rootId, @RequestParam("parent_id") Integer parentId, @RequestParam("to_user_id") Integer toUserId, @RequestParam("content") String content, Integer uid, CommentService commentService) {
         ResponseResult responseResult = new ResponseResult();
         CommentTree commentTree = commentService.sendComment(vid, uid, rootId, parentId, toUserId, content);
         if (commentTree == null) {

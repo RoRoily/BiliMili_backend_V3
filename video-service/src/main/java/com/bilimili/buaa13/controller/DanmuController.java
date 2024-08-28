@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@RestController
+@RestController("/video")
 public class DanmuController {
 
     @Autowired
