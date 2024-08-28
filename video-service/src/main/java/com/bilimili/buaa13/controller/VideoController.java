@@ -1,12 +1,11 @@
 package com.bilimili.buaa13.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bilimili.buaa13.entity.FavoriteVideo;
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.Video;
-import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
 import com.bilimili.buaa13.mapper.VideoMapper;
-import com.bilimili.buaa13.service.utils.CurrentUser;
+
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.video.VideoService;
 import com.bilimili.buaa13.tools.RedisTool;
 import org.apache.ibatis.session.ExecutorType;
@@ -34,15 +33,14 @@ public class VideoController {
     private RedisTool redisTool;
 
     @Autowired
-    private CurrentUser currentUser;
-
-    @Autowired
     private SqlSessionFactory sqlSessionFactory;
     @Autowired
     private VideoMapper videoMapper;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
+    @Autowired
+    private UserServiceClient userServiceClient;
 
     /**
      * 更新视频状态，包括过审、不通过、删除，其中审核相关需要管理员权限，删除可以是管理员或者投稿用户
@@ -268,7 +266,7 @@ public class VideoController {
     @GetMapping("/video/user-play")
     public ResponseResult getUserPlayMovies(@RequestParam("offset") Integer offset,
                                             @RequestParam("quantity") Integer quantity) {
-        Integer uid = currentUser.getUserId();
+        Integer uid = userServiceClient.getCurrentUserId();
         ResponseResult responseResult = new ResponseResult();
         Set<Object> set = redisTemplate.opsForZSet().reverseRange("user_video_history:" + uid, (long) offset, (long) offset + quantity - 1);
         if (set == null || set.isEmpty()) {

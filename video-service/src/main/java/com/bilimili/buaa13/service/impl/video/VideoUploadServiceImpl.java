@@ -6,7 +6,7 @@ import com.bilimili.buaa13.entity.VideoStatus;
 import com.bilimili.buaa13.entity.dto.VideoUploadInfoDTO;
 import com.bilimili.buaa13.mapper.VideoMapper;
 import com.bilimili.buaa13.mapper.VideoStatusMapper;
-import com.bilimili.buaa13.service.utils.CurrentUser;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.video.VideoUploadService;
 import com.bilimili.buaa13.tools.ESTool;
 import com.bilimili.buaa13.tools.OssTool;
@@ -46,7 +46,7 @@ public class VideoUploadServiceImpl implements VideoUploadService {
     private VideoStatusMapper videoStatusMapper;
 
     @Autowired
-    private CurrentUser currentUser;
+    private UserServiceClient userServiceClient;
 
     @Autowired
     private OssTool ossTool;
@@ -152,7 +152,7 @@ public class VideoUploadServiceImpl implements VideoUploadService {
      */
     @Override
     public ResponseResult setVideoMessage(MultipartFile cover, VideoUploadInfoDTO videoUploadInfoDTO) throws IOException {
-        Integer loginUserId = currentUser.getUserId();
+        Integer loginUserId = userServiceClient.getCurrentUserId();
         if (videoUploadInfoDTO.getTitle().trim().isEmpty()) {
             return new ResponseResult(500, "标题不能为空", null);
         }

@@ -1,4 +1,4 @@
-package com.bilimili.buaa13.service.video;
+package com.bilimili.buaa13.service.favorite;
 
 import java.util.Set;
 
