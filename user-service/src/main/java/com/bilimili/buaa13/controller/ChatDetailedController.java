@@ -1,26 +1,17 @@
 package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.ResponseResult;
-import com.bilimili.buaa13.service.message.ChatDetailedService;
-import com.bilimili.buaa13.service.user.UserService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.bilimili.buaa13.dto.ChatDetailsRequest;
-import com.bilimili.buaa13.dto.ChatMessageDeleteRequest;
-import com.bilimili.buaa13.dto.ChatMessageResponse;
-import com.bilimili.buaa13.service.chat.ChatDetailsService;
-import com.bilimili.buaa13.service.chat.CurrentUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
+@RestController("/user")
 public class ChatDetailedController {
     @Autowired
     private ChatDetailedService chatDetailedService;

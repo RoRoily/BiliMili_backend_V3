@@ -1,16 +1,13 @@
 package com.bilimili.buaa13.controller;
 
-
-import com.bilimili.buaa13.entity.CommentTree;
 import com.bilimili.buaa13.entity.ResponseResult;
-import com.bilimili.buaa13.service.comment.CommentService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
 import com.bilimili.buaa13.tools.RedisTool;
+import com.sun.source.doctree.CommentTree;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("/user")
 public class UpdateController {
     @Autowired
     private CommentService commentService;

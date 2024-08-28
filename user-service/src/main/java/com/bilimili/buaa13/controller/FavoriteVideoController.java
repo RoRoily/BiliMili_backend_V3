@@ -3,10 +3,6 @@ package com.bilimili.buaa13.controller;
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.mapper.FavoriteMapper;
 import com.bilimili.buaa13.entity.Favorite;
-import com.bilimili.buaa13.service.utils.CurrentUser;
-import com.bilimili.buaa13.service.video.FavoriteService;
-import com.bilimili.buaa13.service.video.FavoriteVideoService;
-import com.bilimili.buaa13.service.video.UserVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@RestController
+@RestController("/user")
 public class FavoriteVideoController {
     @Autowired
     private CurrentUser currentUser;

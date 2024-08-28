@@ -1,7 +1,6 @@
 package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.ResponseResult;
-import com.bilimili.buaa13.service.user.UserAccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
 
-@RestController
+@RestController("/user")
 public class UserAccountController {
 
     private static final Logger log = LoggerFactory.getLogger(UserAccountController.class);

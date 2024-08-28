@@ -1,17 +1,17 @@
 package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.ResponseResult;
-import com.bilimili.buaa13.service.client.VideoServiceClient;
-import com.bilimili.buaa13.service.utils.CurrentUser;
-
+import com.bilimili.buaa13.entity.UserVideo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-@RestController
+@RestController("/user")
 public class UserVideoController {
 
     @Autowired

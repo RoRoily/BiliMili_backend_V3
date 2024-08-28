@@ -2,15 +2,13 @@ package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.bilimili.buaa13.service.user.FollowService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Objects;
 
-@RestController
+@RestController("/user")
 public class FollowController {
     @Autowired
     private FollowService followService;

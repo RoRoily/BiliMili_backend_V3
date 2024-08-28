@@ -1,16 +1,8 @@
 package com.bilimili.buaa13.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
-import com.bilimili.buaa13.mapper.VideoMapper;
-import com.bilimili.buaa13.mapper.VideoStatusMapper;
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.Video;
-import com.bilimili.buaa13.entity.VideoStatus;
-import com.bilimili.buaa13.service.utils.CurrentUser;
-import com.bilimili.buaa13.service.video.FavoriteService;
-import com.bilimili.buaa13.service.video.FavoriteVideoService;
-import com.bilimili.buaa13.service.video.UserVideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-@RestController
+@RestController("/user")
 public class HistoryController {
     @Autowired
     private CurrentUser currentUser;
