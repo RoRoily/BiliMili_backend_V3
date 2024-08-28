@@ -3,7 +3,7 @@ package com.bilimili.buaa13.service.impl.video;
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.Video;
 import com.bilimili.buaa13.mapper.VideoMapper;
-import com.bilimili.buaa13.service.utils.CurrentUser;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.video.VideoReviewService;
 import com.bilimili.buaa13.service.video.VideoService;
 import com.bilimili.buaa13.tools.RedisTool;
@@ -19,7 +19,7 @@ import java.util.Set;
 public class VideoReviewServiceImpl implements VideoReviewService {
 
     @Autowired
-    private CurrentUser currentUser;
+    private UserServiceClient userServiceClient;
 
     @Autowired
     private VideoService videoService;

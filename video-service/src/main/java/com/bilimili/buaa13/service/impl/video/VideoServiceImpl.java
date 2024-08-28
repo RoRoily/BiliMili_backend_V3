@@ -8,8 +8,7 @@ import com.bilimili.buaa13.entity.VideoStatus;
 import com.bilimili.buaa13.mapper.VideoMapper;
 import com.bilimili.buaa13.mapper.VideoStatusMapper;
 import com.bilimili.buaa13.service.category.CategoryService;
-import com.bilimili.buaa13.service.user.UserService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.video.VideoService;
 import com.bilimili.buaa13.service.video.VideoStatusService;
 import com.bilimili.buaa13.tools.ESTool;
@@ -38,7 +37,7 @@ public class VideoServiceImpl implements VideoService {
     private VideoStatusMapper videoStatusMapper;
 
     @Autowired
-    private UserService userService;
+    private UserServiceClient userServiceClient;
 
     @Autowired
     private CategoryService categoryService;
@@ -46,8 +45,6 @@ public class VideoServiceImpl implements VideoService {
     @Autowired
     private VideoStatusService videoStatusService;
 
-    @Autowired
-    private CurrentUser currentUser;
 
     @Autowired
     private OssTool ossTool;
@@ -213,7 +210,7 @@ public class VideoServiceImpl implements VideoService {
     @Transactional
     public ResponseResult changeVideoStatus(Integer vid, Integer status) throws IOException {
         ResponseResult responseResult = new ResponseResult();
-        Integer userId = currentUser.getUserId();
+        Integer userId = userServiceClient.getCurrentUserId();
         QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("vid", vid).ne("status", 3);
         Video video = videoMapper.selectOne(queryWrapper);
@@ -223,7 +220,7 @@ public class VideoServiceImpl implements VideoService {
             return responseResult;
         }
         if (status == 1 || status == 2) {
-            if (!currentUser.isAdmin()) {
+            if (!userServiceClient.currentIsAdmin()) {
                 responseResult.setCode(403);
                 responseResult.setMessage("您不是管理员，无权访问");
                 return responseResult;
@@ -256,7 +253,7 @@ public class VideoServiceImpl implements VideoService {
             return responseResult;
 
         } else if (status == 3) {
-            if (video.getUid().equals(userId) || currentUser.isAdmin()) {
+            if (video.getUid().equals(userId) || userServiceClient.currentIsAdmin()) {
                 String videoUrl = video.getVideoUrl();
                 String videoName = videoUrl.split("aliyuncs.com/")[1];  // OSS视频文件名
                 String coverUrl = video.getCoverUrl();
@@ -326,7 +323,7 @@ public class VideoServiceImpl implements VideoService {
         else{
             try{
                 map.put("video", video);
-                map.put("user", userService.getUserByUId(video.getUid()));
+                map.put("user", userServiceClient.getUserById(video.getUid()));
                 map.put("stats", videoStatusService.getStatusByVideoId(video.getVid()));
                 map.put("category", categoryService.getCategoryById(video.getMainClassId(), video.getSubClassId()));
             }

@@ -18,8 +18,14 @@ public interface UserServiceClient {
 
     //从userService中寻找提供的服务
     @GetMapping("/user/{uid}")
-    User getUserBtId(@PathVariable("uid") Integer uid);
+    User getUserById(@PathVariable("uid") Integer uid);
 
     @PostMapping("/user/updateUserVideo")
     ResponseEntity<String> updateUserVideo(@RequestBody UserVideo userVideo);
+
+    @PostMapping("/user/currentUser/getId")
+    Integer getCurrentUserId();
+
+    @PostMapping("/user/currentUser/isAdmin")
+    Boolean currentIsAdmin();
 }
