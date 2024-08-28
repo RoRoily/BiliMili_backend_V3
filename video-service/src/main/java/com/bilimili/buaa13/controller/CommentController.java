@@ -1,11 +1,9 @@
 package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.CommentTree;
-import com.bilimili.buaa13.entity.CritiqueTree;
 import com.bilimili.buaa13.entity.ResponseResult;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.comment.CommentService;
-import com.bilimili.buaa13.service.critique.CritiqueService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -25,11 +23,9 @@ public class CommentController {
     @Autowired
     private CommentService commentService;
     @Autowired
-    private CurrentUser currentUser;
+    private UserServiceClient userServiceClient;
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
-    @Autowired
-    private CritiqueService critiqueService;
 
     /**
      * 获取评论树列表，每次查十条
@@ -91,12 +87,12 @@ public class CommentController {
             @RequestParam("parent_id") Integer parentId,
             @RequestParam("to_user_id") Integer acceptId,
             @RequestParam("content") String content ) {
-        return getCritiqueResponseResult(vid, rootId, parentId, acceptId, content, currentUser, commentService);
+        Integer uid = userServiceClient.getCurrentUserId();
+        return getCritiqueResponseResult(vid, rootId, parentId, acceptId, content, uid, commentService);
     }
 
     @NotNull
-    private ResponseResult getCritiqueResponseResult(@RequestParam("vid") Integer vid, @RequestParam("root_id") Integer rootId, @RequestParam("parent_id") Integer parentId, @RequestParam("to_user_id") Integer toUserId, @RequestParam("content") String content, CurrentUser currentUser, CommentService commentService) {
-        Integer uid = currentUser.getUserId();
+    private ResponseResult getCritiqueResponseResult(@RequestParam("vid") Integer vid, @RequestParam("root_id") Integer rootId, @RequestParam("parent_id") Integer parentId, @RequestParam("to_user_id") Integer toUserId, @RequestParam("content") String content, Integer uid, CommentService commentService) {
         ResponseResult responseResult = new ResponseResult();
         CommentTree commentTree = commentService.sendComment(vid, uid, rootId, parentId, toUserId, content);
         if (commentTree == null) {
@@ -114,8 +110,9 @@ public class CommentController {
      */
     @PostMapping("/comment/delete")
     public ResponseResult delCritique(@RequestParam("id") Integer id) {
-        Integer loginUid = currentUser.getUserId();
-        return commentService.deleteComment(id, loginUid, currentUser.isAdmin());
+        Integer loginUid = userServiceClient.getCurrentUserId();
+        Boolean Admin = userServiceClient.currentIsAdmin();
+        return commentService.deleteComment(id, loginUid, Admin);
     }
 
     /**
@@ -129,7 +126,7 @@ public class CommentController {
     public ResponseResult getCommentsByUser(@RequestParam("user_id") Integer userId,
                                             @RequestParam("page") Long page,
                                             @RequestParam("size") Integer size) {
-        List<CritiqueTree> comments = critiqueService.getCritiqueTreeByAid(userId, page, size);
+        List<CommentTree> comments = commentService.getCommentTreeByVid(userId, page, size);
         ResponseResult responseResult = new ResponseResult();
         if (comments.isEmpty()) {
             responseResult.setCode(404);
@@ -147,10 +144,10 @@ public class CommentController {
      */
     @PostMapping("/comment/like")
     public ResponseResult likeCritique(@RequestParam("id") Integer id) {
-        Integer userId = currentUser.getUserId();
+        Integer userId = userServiceClient.getCurrentUserId();
         ResponseResult responseResult = new ResponseResult();
-        Boolean success = true;
-        critiqueService.updateCritique(id, userId.toString(),success,1);
+        boolean success = true;
+        commentService.updateComment(id, userId.toString(),success,1);
         if (Boolean.TRUE.equals(success)) {
             responseResult.setMessage("点赞成功！");
         } else {
@@ -169,8 +166,8 @@ public class CommentController {
     @PostMapping("/comment/report")
     public ResponseResult reportCritique(@RequestParam("id") Integer id,
                                          @RequestParam("reason") String reason) {
-        Integer userId = currentUser.getUserId();
-        boolean success = critiqueService.reportCritique(id, userId, reason);
+        Integer userId = userServiceClient.getCurrentUserId();
+        boolean success = commentService.reportComment(id, userId, reason);
 
         ResponseResult responseResult = new ResponseResult();
         if (success) {

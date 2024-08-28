@@ -3,15 +3,8 @@ package com.bilimili.buaa13.controller;
 import com.bilimili.buaa13.entity.Danmu;
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.dto.UserDTO;
-import com.bilimili.buaa13.mapper.DanmuMapper;
-import com.bilimili.buaa13.mapper.UserMapper;
-import com.bilimili.buaa13.mapper.VideoMapper;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.danmu.DanmuService;
-import com.bilimili.buaa13.service.user.UserService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
-import com.bilimili.buaa13.service.video.VideoReviewService;
-import com.bilimili.buaa13.service.video.VideoStatusService;
-import com.bilimili.buaa13.tools.RedisTool;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.*;
@@ -22,32 +15,12 @@ import java.util.Set;
 
 @RestController
 public class DanmuController {
-    @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private DanmuMapper danmuMapper;
-
-    @Autowired
-    private VideoMapper videoMapper;
-
-    @Autowired
-    private VideoStatusService videoStatusService;
-
-    @Autowired
-    private VideoReviewService videoReviewService;
 
     @Autowired
     private DanmuService danmuService;
 
     @Autowired
-    private RedisTool redisTool;
-
-    @Autowired
-    private CurrentUser currentUser;
+    private UserServiceClient userServiceClient;
 
     @Autowired
     private RedisTemplate<String, Object> redisTemplate;
@@ -73,10 +46,10 @@ public class DanmuController {
         while (!individualDanmuList.isEmpty()) {
             System.out.println("IndividualBarrageList 出错，内容中出现未期望的barrage实体");
             UserDTO individual = new UserDTO();
-            individual.setUid(currentUser.getUserId());
+            individual.setUid(userServiceClient.getCurrentUserId());
             if(individual.getUid()==null){
                 //使用超级管理员对currentUser进行初始化
-                individual = userService.getUserByUId(0);
+                individual = userServiceClient.getUserById(0);
             }
         }
         ResponseResult responseResult = new ResponseResult();
@@ -95,17 +68,15 @@ public class DanmuController {
         while (!individualDanmuList.isEmpty()) {
             System.out.println("IndividualBarrageList 出错，内容中出现未期望的Barrage实体");
             UserDTO individual = new UserDTO();
-            individual.setUid(currentUser.getUserId());
+            individual.setUid(userServiceClient.getCurrentUserId());
             if(individual.getUid()==null){
                 //使用超级管理员对currentUser进行初始化
-                individual = userService.getUserByUId(0);
+                individual = userServiceClient.getUserById(0);
             }
         }
 
-
-        Integer loginUid = currentUser.getUserId();
-        return danmuService.deleteBarrage(id, loginUid, currentUser.isAdmin());
+        Integer loginUid = userServiceClient.getCurrentUserId();
+        return danmuService.deleteBarrage(id, loginUid, userServiceClient.currentIsAdmin());
     }
-
     //------------------------------------------------------------------------------------------
 }

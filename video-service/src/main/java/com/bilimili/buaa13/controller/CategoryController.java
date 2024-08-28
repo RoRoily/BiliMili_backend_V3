@@ -5,7 +5,6 @@ import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.Video;
 import com.bilimili.buaa13.mapper.CategoryMapper;
 import com.bilimili.buaa13.service.category.CategoryService;
-import com.bilimili.buaa13.service.user.UserService;
 import com.bilimili.buaa13.service.video.VideoStatusService;
 import com.bilimili.buaa13.tools.RedisTool;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ public class CategoryController {
 
     @Autowired
     private CategoryService categoryService;
-
-    @Autowired
-    private UserService userService;
 
     @Autowired
     private RedisTool redisTool;
@@ -52,7 +48,6 @@ public class CategoryController {
 
                 try{
                     map.put("video", video);
-                    map.put("user", userService.getUserByUId(video.getUid()));
                     map.put("stats", videoStatusService.getStatusByVideoId(video.getVid()));
                     map.put("category", categoryService.getCategoryById(video.getMainClassId(), video.getSubClassId()));
                 }

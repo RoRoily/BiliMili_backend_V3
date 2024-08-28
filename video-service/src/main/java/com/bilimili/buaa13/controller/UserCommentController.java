@@ -1,8 +1,8 @@
 package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.ResponseResult;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.comment.UserCommentService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,14 +10,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @Slf4j
 @RestController
 public class UserCommentController {
     @Autowired
-    private CurrentUser currentUser;
+    private UserServiceClient userServiceClient;
 
 
 
@@ -29,7 +28,7 @@ public class UserCommentController {
      */
     @GetMapping("/comment/get-like-and-dislike")
     public ResponseResult getLikeAndDislike() {
-        Integer uid = currentUser.getUserId();
+        Integer uid = userServiceClient.getCurrentUserId();
         Map<String, Object> map = userCommentService.getUserUpVoteAndDownVote(uid);
         ResponseResult response = new ResponseResult();
         response.setCode(200);
@@ -47,7 +46,7 @@ public class UserCommentController {
     public ResponseResult loveOrNot(@RequestParam("id") Integer id,
                                     @RequestParam("isLike") boolean isLike,
                                     @RequestParam("isCancel") boolean isCancel) {
-        Integer uid = currentUser.getUserId();
+        Integer uid = userServiceClient.getCurrentUserId();
         userCommentService.setUserUpVoteOrDownVote(uid, id, isLike, isCancel);
         return new ResponseResult();
     }

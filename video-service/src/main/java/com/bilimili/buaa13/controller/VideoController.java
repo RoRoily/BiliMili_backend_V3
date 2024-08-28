@@ -24,9 +24,6 @@ import java.util.*;
 public class VideoController {
 
     @Autowired
-    private FavoriteVideoMapper favoriteVideoMapper;
-
-    @Autowired
     private VideoService videoService;
 
     @Autowired
@@ -317,15 +314,7 @@ public class VideoController {
             responseResult.setData(result);
             return responseResult;
         }
-        try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
-            result.stream().parallel().forEach(map -> {
-                Video video = (Video) map.get("video");
-                QueryWrapper<FavoriteVideo> queryWrapper = new QueryWrapper<>();
-                queryWrapper.eq("vid", video.getVid()).eq("fid", fid);
-                map.put("info", favoriteVideoMapper.selectOne(queryWrapper));
-            });
-            sqlSession.commit();
-        }
+        userServiceClient.updateFavoriteVideo(result,fid);
         responseResult.setData(result);
         return responseResult;
     }

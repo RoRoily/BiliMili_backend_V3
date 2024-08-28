@@ -1,13 +1,28 @@
 package com.bilimili.buaa13.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.bilimili.buaa13.entity.FavoriteVideo;
+import com.bilimili.buaa13.entity.IMResponse;
+import com.bilimili.buaa13.entity.Video;
 import com.bilimili.buaa13.entity.dto.UserDTO;
+import com.bilimili.buaa13.im.IMServer;
+import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
+import com.bilimili.buaa13.service.message.MessageUnreadService;
 import com.bilimili.buaa13.service.user.UserService;
 import com.bilimili.buaa13.service.utils.CurrentUser;
+import com.bilimili.buaa13.tools.RedisTool;
+import io.netty.channel.Channel;
+import org.apache.ibatis.session.ExecutorType;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 @RestController("/user")
 public class UserClientController {
@@ -16,6 +31,18 @@ public class UserClientController {
     private CurrentUser currentUser;
     @Autowired
     private UserService userService;
+    @Autowired
+    private SqlSessionFactory sqlSessionFactory;
+
+    @Autowired
+    private FavoriteVideoMapper favoriteVideoMapper;
+    @Autowired
+    private RedisTool redisTool;
+    @Autowired
+    private IMServer imServer;
+    @Autowired
+    private MessageUnreadService messageUnreadService;
+
     //从userService中寻找提供的服务
     @GetMapping("/{uid}")
     public UserDTO getUserById(@PathVariable("uid") Integer uid){
@@ -30,5 +57,40 @@ public class UserClientController {
     @PostMapping("/currentUser/isAdmin")
     public Boolean currentIsAdmin(){
         return currentUser.isAdmin();
+    }
+
+
+    @PostMapping("/updateFavoriteVideo")
+    public ResponseEntity<Void> updateFavoriteVideo(@RequestBody List<Map<String, Object>> result, @RequestParam("fid") Integer fid) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
+            result.stream().parallel().forEach(map -> {
+                Video video = (Video) map.get("video");
+                QueryWrapper<FavoriteVideo> queryWrapper = new QueryWrapper<>();
+                queryWrapper.eq("vid", video.getVid()).eq("fid", fid);
+                map.put("info", favoriteVideoMapper.selectOne(queryWrapper));
+            });
+            sqlSession.commit();
+        }
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/handle_comment")
+    public void handleComment(@RequestParam("uid") Integer uid,
+                              @RequestParam("toUid") Integer toUid,
+                              @RequestParam("id") Integer id){
+
+        if(!toUid.equals(uid)) {
+            //1注释Redis
+            redisTool.storeZSet("reply_zset:" + toUid, id);
+            messageUnreadService.addOneUnread(toUid, "reply");
+
+            // 通知未读消息
+            Map<String, Object> map = new HashMap<>();
+            map.put("type", "接收");
+            Set<Channel> commentChannel = IMServer.userChannel.get(toUid);
+            if (commentChannel != null) {
+                commentChannel.stream().parallel().forEach(channel -> channel.writeAndFlush(IMResponse.message("reply", map)));
+            }
+        }
     }
 }
