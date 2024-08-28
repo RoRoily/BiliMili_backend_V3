@@ -4,11 +4,10 @@ import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.User;
 import com.bilimili.buaa13.entity.dto.UserDTO;
 import com.bilimili.buaa13.mapper.UserMapper;
-import com.bilimili.buaa13.mapper.VideoMapper;
+import com.bilimili.buaa13.service.client.VideoServiceClient;
+import com.bilimili.buaa13.service.user.FavoriteService;
 import com.bilimili.buaa13.service.user.UserService;
 import com.bilimili.buaa13.service.utils.CurrentUser;
-import com.bilimili.buaa13.service.video.FavoriteService;
-import com.bilimili.buaa13.service.video.VideoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,20 +23,17 @@ public class FavoriteController {
     private final List<User> curretUserList = new ArrayList<>();
 
     private final Boolean success = false;
+
     @Autowired
-    private FavoriteService favoriteService;
+    private VideoServiceClient videoServiceClient;
+
 
     @Autowired
     private UserService userService;
 
-    @Autowired
-    private VideoService videoService;
 
     @Autowired
-    private UserMapper userMapper;
-
-    @Autowired
-    private VideoMapper videoMapper;
+    private FavoriteService favoriteService;
 
     @Autowired
     private CurrentUser currentUser;

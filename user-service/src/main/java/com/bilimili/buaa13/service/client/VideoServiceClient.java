@@ -13,5 +13,5 @@ public interface VideoServiceClient {
 
     //从videoService中寻找提供的服务
     @GetMapping("/video/{vid}")
-    Video getUserBtId(@PathVariable("vid") Integer vid);
+    Video getVideoById(@PathVariable("vid") Integer vid);
 }
