@@ -1,8 +1,7 @@
 package com.bilimili.buaa13.service.client;
 
-import com.bilimili.buaa13.entity.User;
 import com.bilimili.buaa13.entity.UserVideo;
-import com.bilimili.buaa13.entity.Video;
+import com.bilimili.buaa13.entity.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +18,7 @@ public interface UserServiceClient {
 
     //从userService中寻找提供的服务
     @GetMapping("/user/{uid}")
-    User getUserById(@PathVariable("uid") Integer uid);
+    UserDTO getUserById(@PathVariable("uid") Integer uid);
 
     @PostMapping("/user/updateUserVideo")
     ResponseEntity<String> updateUserVideo(@RequestBody UserVideo userVideo);
