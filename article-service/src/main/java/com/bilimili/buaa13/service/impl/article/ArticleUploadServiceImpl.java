@@ -4,7 +4,6 @@ import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.dto.ArticleUploadDTO;
 import com.bilimili.buaa13.service.article.ArticleUploadService;
 import com.bilimili.buaa13.service.client.UserArticleClient;
-import com.bilimili.buaa13.service.utils.CurrentUser;
 import com.bilimili.buaa13.tools.OssTool;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

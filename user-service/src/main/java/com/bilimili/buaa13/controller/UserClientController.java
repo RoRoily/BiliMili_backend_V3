@@ -1,12 +1,12 @@
 package com.bilimili.buaa13.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.bilimili.buaa13.entity.FavoriteVideo;
-import com.bilimili.buaa13.entity.IMResponse;
-import com.bilimili.buaa13.entity.Video;
+import com.bilimili.buaa13.entity.*;
 import com.bilimili.buaa13.entity.dto.UserDTO;
 import com.bilimili.buaa13.im.IMServer;
+import com.bilimili.buaa13.mapper.FavoriteMapper;
 import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
+import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
 import com.bilimili.buaa13.service.message.MessageUnreadService;
 import com.bilimili.buaa13.service.user.UserService;
 import com.bilimili.buaa13.service.utils.CurrentUser;
@@ -19,10 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController("/user")
 public class UserClientController {
@@ -42,6 +39,10 @@ public class UserClientController {
     private IMServer imServer;
     @Autowired
     private MessageUnreadService messageUnreadService;
+    @Autowired
+    private FavoriteMapper favoriteMapper;
+    @Autowired
+    private FavoriteVideoService favoriteVideoService;
 
     //从userService中寻找提供的服务
     @GetMapping("/{uid}")
@@ -92,5 +93,47 @@ public class UserClientController {
                 commentChannel.stream().parallel().forEach(channel -> channel.writeAndFlush(IMResponse.message("reply", map)));
             }
         }
+    }
+
+    @PostMapping("/set/favorite")
+    ResponseResult setFavorite(@RequestParam("fid") Integer fid ,
+                               @RequestParam("vid") String vids){
+        ResponseResult responseResult = new ResponseResult();
+        List<Integer> videoList = new ArrayList<>();
+        String[] videos = vids.split(",");
+        for (String s : videos) {
+            try {
+                videoList.add(Integer.parseInt(s));
+            } catch (NumberFormatException e) {
+                // 处理可能的转换异常
+                System.err.println("Invalid number format: " + s);
+            }
+        }
+        Integer uid = fid;
+        QueryWrapper<Favorite> favoriteQueryWrapper = new QueryWrapper<>();
+        favoriteQueryWrapper.eq("fid", uid).eq("type", 1);
+        Favorite favorite = favoriteMapper.selectOne(favoriteQueryWrapper);
+        if(favorite == null){
+            responseResult.setCode(404);
+            responseResult.setMessage("Favorite not found");
+            return responseResult;
+        }
+        Set<Integer>addSet = new HashSet<>();
+        List<Integer> collectedVid = favoriteVideoMapper.getVidByFid(fid);
+        addSet.add(fid);
+        int flag = 0;
+        for(Integer vid:videoList){
+            if(collectedVid.contains(vid)){
+                flag++;
+            }
+            else favoriteVideoService.addToFav(uid,vid,addSet);
+        }
+        if(flag >= videoList.size()){
+            responseResult.setData(true);
+        }
+        else {
+            responseResult.setData(false);
+        }
+        return responseResult;
     }
 }

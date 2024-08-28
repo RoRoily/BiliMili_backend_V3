@@ -217,7 +217,6 @@ public class ArticleController {
                                                @RequestParam("uid") Integer uid
     ) {
         System.out.println(aid);
-        ResponseResult responseResult = new ResponseResult();
         Article article = null;
         QueryWrapper<Article> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("aid", aid).ne("status", 3);
@@ -226,43 +225,8 @@ public class ArticleController {
         if(article == null){
             return new ResponseResult(500,"未找到文章对应的aid",null);
         }
-        List<Integer> videoList = new ArrayList<>();
-        String[] videos = article.getVid().split(",");
-        for (String s : videos) {
-            try {
-                videoList.add(Integer.parseInt(s));
-            } catch (NumberFormatException e) {
-                // 处理可能的转换异常
-                System.err.println("Invalid number format: " + s);
-            }
-        }
         //依次收藏视频
-        QueryWrapper<Favorite> favoriteQueryWrapper = new QueryWrapper<>();
-        favoriteQueryWrapper.eq("fid", uid).eq("type", 1);
-        Favorite favorite = favoriteMapper.selectOne(favoriteQueryWrapper);
-        if(favorite == null){
-            responseResult.setCode(404);
-            responseResult.setMessage("Favorite not found");
-            return responseResult;
-        }
-        Set<Integer>addSet = new HashSet<>();
-        Integer fid = favorite.getFid();
-        List<Integer> collectedVid = favoriteVideoMapper.getVidByFid(fid);
-        addSet.add(fid);
-        int flag = 0;
-        for(Integer vid:videoList){
-            if(collectedVid.contains(vid)){
-                flag++;
-            }
-            else favoriteVideoService.addToFav(uid,vid,addSet);
-        }
-        if(flag >= videoList.size()){
-            responseResult.setData(true);
-        }
-        else {
-            responseResult.setData(false);
-        }
-        return responseResult;
+        return userArticleClient.setFavorite(uid,article.getVid());
     }
 
 
@@ -314,7 +278,7 @@ public class ArticleController {
             vidList.add(Integer.parseInt(vid));
         }
         Map<String, Object> dataMap = new HashMap<>();
-        HistoryController.setHistoryMap(vidList, videoMapper, videoStatusMapper,dataMap);
+        videoArticleClient.setHistory(vidList,dataMap);
         responseResult.setData(dataMap);
         return responseResult;
     }

@@ -1,5 +1,6 @@
 package com.bilimili.buaa13.service.client;
 
+import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.User;
 import com.bilimili.buaa13.entity.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -25,4 +26,8 @@ public interface UserArticleClient {
 
     @PostMapping("/user/currentUser/isAdmin")
     Boolean currentIsAdmin();
+
+    @PostMapping("/user/set/favorite")
+    ResponseResult setFavorite(@RequestParam("fid") Integer fid,
+                               @RequestParam("vid") String vids);
 }
