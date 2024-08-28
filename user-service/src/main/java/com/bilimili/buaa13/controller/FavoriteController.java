@@ -8,16 +8,14 @@ import com.bilimili.buaa13.service.favorite.FavoriteService;
 import com.bilimili.buaa13.service.user.UserService;
 import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @RestController
+@RequestMapping("/user")
 public class FavoriteController {
     private final List<User> curretUserList = new ArrayList<>();
 

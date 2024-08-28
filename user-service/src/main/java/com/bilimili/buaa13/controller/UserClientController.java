@@ -21,7 +21,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class UserClientController {
 
     @Autowired

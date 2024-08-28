@@ -10,7 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Objects;
 
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class FollowController {
     @Autowired
     private FollowService followService;

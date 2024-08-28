@@ -88,9 +88,7 @@ public class UserServiceImpl implements UserService {
         else{
             // 并发执行每个视频数据统计的查询任务
             //并行流方式遍历列表
-            List<VideoStatus> list = set.stream().parallel()
-                .map(vid -> videoServiceClient.getVideoStatusById((Integer) vid))
-                .toList();
+            List<VideoStatus> list ;
             List<Object> listSet = new ArrayList<>(set);
             list = new ArrayList<>();
 

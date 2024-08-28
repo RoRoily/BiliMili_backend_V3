@@ -54,7 +54,7 @@ public class WebSocketHandler extends SimpleChannelInboundHandler<TextWebSocketF
                     System.out.println("NOTICE IS NOY WRONG");
                     //List<Integer> fans = followService.getUidFans(post_id,true);
                     //for(Integer fan:fans){
-                    NoticeHandler.send(ctx,tx);
+                    //NoticeHandler.send(ctx,tx);
                     //}
                     System.out.println("send fine");
                     break;

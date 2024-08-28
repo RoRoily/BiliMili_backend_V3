@@ -2,14 +2,15 @@ package com.bilimili.buaa13;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 @EnableFeignClients
-public class DiscoverApplication {
+public class ArticleServiceApplication {
+
     public static void main(String[] args) {
-        ConfigurableApplicationContext applicationContext = SpringApplication.run(DiscoverApplication.class, args);
-        System.out.println(1);
+        SpringApplication.run(ArticleServiceApplication.class,args);
     }
 }

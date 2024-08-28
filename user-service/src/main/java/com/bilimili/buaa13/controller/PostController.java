@@ -5,10 +5,7 @@ import com.bilimili.buaa13.mapper.PostMapper;
 import com.bilimili.buaa13.entity.Post;
 import com.bilimili.buaa13.entity.PostTree;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.bilimili.buaa13.tools.OssTool;
 import com.bilimili.buaa13.service.utils.CurrentUser;
@@ -17,7 +14,8 @@ import com.bilimili.buaa13.service.post.PostService;
 import java.util.Date;
 import java.util.List;
 
-@RestController("/user")
+@RestController
+@RequestMapping("/user")
 public class PostController {
 
 
