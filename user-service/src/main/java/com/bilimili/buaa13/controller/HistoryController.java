@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import com.bilimili.buaa13.service.utils.CurrentUser;
+import com.bilimili.buaa13.service.user.FavoriteService;
+import com.bilimili.buaa13.service.user.FavoriteVideoService;
 
 import java.util.*;
 
