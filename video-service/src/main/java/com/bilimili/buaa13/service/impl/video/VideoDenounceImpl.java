@@ -2,14 +2,7 @@ package com.bilimili.buaa13.service.impl.video;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
-import com.bilimili.buaa13.entity.Article;
-import com.bilimili.buaa13.entity.Critique;
 import com.bilimili.buaa13.entity.ResponseResult;
-import com.bilimili.buaa13.mapper.ArticleMapper;
-import com.bilimili.buaa13.mapper.CritiqueMapper;
-import com.bilimili.buaa13.service.article.ArticleStatusService;
-import com.bilimili.buaa13.service.message.MessageUnreadService;
-import com.bilimili.buaa13.service.user.UserService;
 import com.bilimili.buaa13.service.video.VideoDenounceService;
 import com.bilimili.buaa13.tools.RedisTool;
 import org.springframework.beans.factory.annotation.Autowired;

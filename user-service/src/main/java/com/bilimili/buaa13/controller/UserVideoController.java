@@ -2,10 +2,15 @@ package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.UserVideo;
+import com.bilimili.buaa13.service.client.VideoServiceClient;
+import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
+import com.bilimili.buaa13.service.user.UserVideoService;
+import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,13 +21,14 @@ public class UserVideoController {
 
     @Autowired
     private VideoServiceClient videoServiceClient;
-
-
+    @Autowired
+    private UserVideoService userVideoService;
 
     @Autowired
     private CurrentUser currentUser;
 
-
+    @Autowired
+    private FavoriteVideoService favoriteVideoService;
 
     /**
      * 登录用户播放视频时更新播放次数，有30秒更新间隔（防止用户刷播放量）
