@@ -1,4 +1,4 @@
-package com.buaa13.bilimili;
+package com.bilimili.buaa13;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

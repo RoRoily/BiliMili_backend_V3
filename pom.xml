@@ -20,6 +20,8 @@
         <module>config_service</module>
         <module>discover_service</module>
         <module>gateway_service</module>
+        <module>user-service</module>
+        <module>video-service</module>
     </modules>
     <properties>
         <java.version>17</java.version>
