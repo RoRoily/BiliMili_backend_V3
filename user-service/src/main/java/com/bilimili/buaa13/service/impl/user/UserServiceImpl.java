@@ -9,9 +9,9 @@ import com.bilimili.buaa13.entity.VideoStatus;
 import com.bilimili.buaa13.entity.dto.UserDTO;
 import com.bilimili.buaa13.mapper.FollowMapper;
 import com.bilimili.buaa13.mapper.UserMapper;
+import com.bilimili.buaa13.service.client.VideoServiceClient;
 import com.bilimili.buaa13.service.user.UserAccountService;
 import com.bilimili.buaa13.service.user.UserService;
-import com.bilimili.buaa13.service.video.VideoStatusService;
 import com.bilimili.buaa13.tools.ESTool;
 import com.bilimili.buaa13.tools.OssTool;
 import com.bilimili.buaa13.tools.RedisTool;
@@ -37,7 +37,7 @@ public class UserServiceImpl implements UserService {
     private UserAccountService userAccountService;
 
     @Autowired
-    private VideoStatusService videoStatusService;
+    private VideoServiceClient videoServiceClient;
 
     @Autowired
     private FollowMapper followMapper;
@@ -89,7 +89,7 @@ public class UserServiceImpl implements UserService {
             // 并发执行每个视频数据统计的查询任务
             //并行流方式遍历列表
             List<VideoStatus> list = set.stream().parallel()
-                .map(vid -> videoStatusService.getStatusByVideoId((Integer) vid))
+                .map(vid -> videoServiceClient.getVideoStatusById((Integer) vid))
                 .toList();
             List<Object> listSet = new ArrayList<>(set);
             list = new ArrayList<>();
@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
             int setSize = listSet.size();
             for(int i=0;i< setSize;++i){
                 int vid = (int)listSet.get(i);
-                VideoStatus videoStatus = videoStatusService.getStatusByVideoId(vid);
+                VideoStatus videoStatus = videoServiceClient.getVideoStatusById(vid);
                 list.add(videoStatus);
             }
             //遍历查找用户播放，点赞总数据
@@ -168,7 +168,7 @@ public class UserServiceImpl implements UserService {
             int setSize = listSet.size();
             for(int j=0;j< setSize;++j){
                 int vid = (int)listSet.get(j);
-                VideoStatus videoStatus = videoStatusService.getStatusByVideoId(vid);
+                VideoStatus videoStatus = videoServiceClient.getVideoStatusById(vid);
                 listVideoStats.add(videoStatus);
             }
             //遍历查找用户播放，点赞总数据
