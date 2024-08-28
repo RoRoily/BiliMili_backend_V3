@@ -1,4 +1,4 @@
-package com.bilimili.buaa13.service.impl.video;
+package com.bilimili.buaa13.service.impl.user;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -7,10 +7,9 @@ import com.bilimili.buaa13.entity.UserVideo;
 import com.bilimili.buaa13.entity.Video;
 import com.bilimili.buaa13.im.IMServer;
 import com.bilimili.buaa13.mapper.UserVideoMapper;
-import com.bilimili.buaa13.mapper.VideoMapper;
+import com.bilimili.buaa13.service.client.VideoServiceClient;
 import com.bilimili.buaa13.service.message.MessageUnreadService;
-import com.bilimili.buaa13.service.video.UserVideoService;
-import com.bilimili.buaa13.service.video.VideoStatusService;
+import com.bilimili.buaa13.service.user.UserVideoService;
 import com.bilimili.buaa13.tools.RedisTool;
 import io.netty.channel.Channel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,13 +27,11 @@ public class UserVideoServiceImpl implements UserVideoService {
     private UserVideoMapper userVideoMapper;
 
     @Autowired
-    private VideoStatusService videoStatusService;
-
-    @Autowired
     private MessageUnreadService messageUnreadService;
 
     @Autowired
-    private VideoMapper videoMapper;
+    private VideoServiceClient videoServiceClient;
+
 
     @Autowired
     private RedisTool redisTool;
@@ -69,7 +66,7 @@ public class UserVideoServiceImpl implements UserVideoService {
         // 异步线程更新video表和redis
         CompletableFuture.runAsync(() -> {
             redisTool.storeZSet("user_video_history:" + uid, vid);   // 添加到/更新观看历史记录
-            videoStatusService.updateVideoStatus(vid, "play", true, 1);
+            videoServiceClient.updateVideoStatus(vid, "play", true, 1);
         }, taskExecutor);
         return userVideo;
     }
@@ -105,12 +102,12 @@ public class UserVideoServiceImpl implements UserVideoService {
                 userVideo.setUnlove(0);
                 updateWrapper.setSql("unlove = 0");
                 CompletableFuture.runAsync(() -> {
-                    videoStatusService.updateGoodAndBad(vid, true);
+                    videoServiceClient.updateGoodAndBad(vid, true);
                 }, taskExecutor);
             } else {
                 // 原本没点踩，只需要点赞就行
                 CompletableFuture.runAsync(() -> {
-                    videoStatusService.updateVideoStatus(vid, "good", true, 1);
+                    videoServiceClient.updateVideoStatus(vid, "good", true, 1);
                 }, taskExecutor);
             }
             redisTool.storeZSet(key, vid);   // 添加点赞记录
@@ -118,7 +115,7 @@ public class UserVideoServiceImpl implements UserVideoService {
             // 通知up主视频被赞了
             CompletableFuture.runAsync(() -> {
                 // 查询UP主uid
-                Video video = videoMapper.selectById(vid);
+                Video video = videoServiceClient.getVideoById(vid);
                 if(!Objects.equals(video.getUid(), uid)) {
                     // 更新最新被点赞的视频
                     redisTool.storeZSet("be_loved_zset:" + video.getUid(), vid);
@@ -148,7 +145,7 @@ public class UserVideoServiceImpl implements UserVideoService {
             userVideoMapper.update(null, updateWrapper);
             redisTool.deleteZSetMember(key, vid);  // 移除点赞记录
             CompletableFuture.runAsync(() -> {
-                videoStatusService.updateVideoStatus(vid, "good", false, 1);
+                videoServiceClient.updateVideoStatus(vid, "good", false, 1);
             }, taskExecutor);
         } else if (isSet) {
             // 点踩
@@ -167,12 +164,12 @@ public class UserVideoServiceImpl implements UserVideoService {
                 updateWrapper.setSql("love = 0");
                 redisTool.deleteZSetMember(key, vid);  // 移除点赞记录
                 CompletableFuture.runAsync(() -> {
-                    videoStatusService.updateGoodAndBad(vid, false);
+                   videoServiceClient.updateGoodAndBad(vid, false);
                 }, taskExecutor);
             } else {
                 // 原本没点赞，只需要点踩就行
                 CompletableFuture.runAsync(() -> {
-                    videoStatusService.updateVideoStatus(vid, "bad", true, 1);
+                    videoServiceClient.updateVideoStatus(vid, "bad", true, 1);
                 }, taskExecutor);
             }
             userVideoMapper.update(null, updateWrapper);
@@ -189,7 +186,7 @@ public class UserVideoServiceImpl implements UserVideoService {
             updateWrapper.setSql("unlove = 0");
             userVideoMapper.update(null, updateWrapper);
             CompletableFuture.runAsync(() -> {
-                videoStatusService.updateVideoStatus(vid, "bad", false, 1);
+                videoServiceClient.updateVideoStatus(vid, "bad", false, 1);
             }, taskExecutor);
         }
         return userVideo;
@@ -212,7 +209,7 @@ public class UserVideoServiceImpl implements UserVideoService {
             updateWrapper.setSql("collect = 0");
         }
         CompletableFuture.runAsync(() -> {
-            videoStatusService.updateVideoStatus(vid, "collect", isCollect, 1);
+            videoServiceClient.updateVideoStatus(vid, "collect", isCollect, 1);
         }, taskExecutor);
         userVideoMapper.update(null, updateWrapper);
     }

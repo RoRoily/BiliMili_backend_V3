@@ -39,7 +39,7 @@ public class VideoReviewServiceImpl implements VideoReviewService {
     @Override
     public ResponseResult getTotalNumberByStatus(Integer status) {
         ResponseResult responseResult = new ResponseResult();
-        if (!currentUser.isAdmin()) {
+        if (!userServiceClient.currentIsAdmin()) {
             responseResult.setCode(403);
             responseResult.setMessage("您不是管理员，无权访问");
             return responseResult;
@@ -58,7 +58,7 @@ public class VideoReviewServiceImpl implements VideoReviewService {
     @Override
     public ResponseResult getVideosByPageAndStatus(Integer status, Integer page, Integer quantity) {
         ResponseResult responseResult = new ResponseResult();
-        if (!currentUser.isAdmin()) {
+        if (!userServiceClient.currentIsAdmin()) {
             responseResult.setMessage("您不是管理员，无权访问");
             responseResult.setCode(403);
             return responseResult;

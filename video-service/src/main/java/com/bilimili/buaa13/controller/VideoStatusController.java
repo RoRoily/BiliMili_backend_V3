@@ -4,6 +4,7 @@ import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.service.video.VideoStatusService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,6 +14,7 @@ import java.util.Random;
 
 
 @RestController
+@RequestMapping("/video")
 public class VideoStatusController {
 
 
@@ -218,5 +220,23 @@ public class VideoStatusController {
         return new ResponseResult();
     }
 
+
+    /**用于userVideoService 的微服务接收**/
+    @PostMapping("/updateStatus")
+    public void updateVideoStatus(@RequestParam("vid") Integer vid,
+                                            @RequestParam("statusType") String statusType,
+                                            @RequestParam("increment") Boolean increment,
+                                            @RequestParam("count") Integer count) {
+        videoStatusService.updateVideoStatus(vid, statusType, increment, count);
+    }
+
+
+    /**用于userVideoService 的微服务接受**/
+    @PostMapping("/updateGoodAndBad")
+    public void updateGoodAndBad(@RequestParam("vid") Integer vid,
+                                 @RequestParam("addGood") Boolean addGood
+    ){
+        videoStatusService.updateGoodAndBad(vid,addGood);
+    }
 
 }
