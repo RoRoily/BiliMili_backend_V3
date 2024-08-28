@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.*;
 
 @Service
 public class VideoStatusServiceImpl implements VideoStatusService {
@@ -88,5 +89,11 @@ public class VideoStatusServiceImpl implements VideoStatusService {
         videoStatusMapper.update(null, updateWrapper);
         //1注释Redis
         redisTool.deleteValue("videoStats:" + vid);
+    }
+
+
+    @Override
+    public List<VideoStatus> getVideoStatusesByIds(List<Integer> videoIds) {
+        return videoStatusMapper.selectBatchIds(videoIds);
     }
 }

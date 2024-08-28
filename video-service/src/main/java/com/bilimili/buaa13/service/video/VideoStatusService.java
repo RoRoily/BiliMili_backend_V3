@@ -2,6 +2,8 @@ package com.bilimili.buaa13.service.video;
 
 import com.bilimili.buaa13.entity.VideoStatus;
 
+import java.util.List;
+
 public interface VideoStatusService {
     /**
      * 根据视频ID查询视频常变数据
@@ -25,4 +27,7 @@ public interface VideoStatusService {
      * @param addGood   是否点赞，true则good+1&bad-1，false则good-1&bad+1
      */
     void updateGoodAndBad(Integer vid, boolean addGood);
+
+    //用于微服务
+    List<VideoStatus> getVideoStatusesByIds(List<Integer> videoIds);
 }

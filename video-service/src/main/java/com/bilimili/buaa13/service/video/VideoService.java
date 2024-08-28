@@ -50,4 +50,9 @@ public interface VideoService {
      * @return 无data返回，仅返回响应信息
      */
     ResponseResult changeVideoStatus(Integer vid, Integer status) throws IOException;
+
+
+    //用于微服务
+    List<Video> getVideosByIds(List<Integer> videoIds);
+
 }

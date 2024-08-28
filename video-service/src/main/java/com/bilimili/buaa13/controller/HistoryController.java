@@ -4,39 +4,29 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.Video;
 import com.bilimili.buaa13.entity.VideoStatus;
-import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
-import com.bilimili.buaa13.service.favorite.FavoriteService;
-import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
+import com.bilimili.buaa13.mapper.VideoStatusMapper;
+import com.bilimili.buaa13.mapper.VideoMapper;
+import com.bilimili.buaa13.service.client.UserServiceClient;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import com.bilimili.buaa13.service.utils.CurrentUser;
-import com.bilimili.buaa13.service.user.FavoriteService;
-import com.bilimili.buaa13.service.user.FavoriteVideoService;
 
 import java.util.*;
 
 @RestController("/user")
 public class HistoryController {
-    @Autowired
-    private CurrentUser currentUser;
 
     @Autowired
-    private FavoriteService favoriteService;
+    private UserServiceClient userServiceClient;
 
-    @Autowired
-    private FavoriteVideoService favoriteVideoService;
-
-    @Autowired
-    private UserVideoService userVideoService;
-    @Autowired
-    private FavoriteVideoMapper favoriteVideoMapper;
     @Autowired
     private VideoMapper videoMapper;
+
     @Autowired
     private VideoStatusMapper videoStatusMapper;
+
 
     /**
      * 获取历史记录
@@ -46,8 +36,8 @@ public class HistoryController {
     public ResponseResult getRecordVideoByUid(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         int fid = 5000+uid;
-        List<Integer> vids = favoriteVideoMapper.getVidByFid(fid);
-        List<Date> times = favoriteVideoMapper.getTimeByFid(fid);
+        List<Integer> vids = userServiceClient.getVidsByFid(fid);
+        List<Date> times = userServiceClient.getTimeByFid(fid);
         Map<String, Object> dataMap = new HashMap<>();
         setHistoryMap(vids, videoMapper, videoStatusMapper, dataMap);
         dataMap.put("time",times);

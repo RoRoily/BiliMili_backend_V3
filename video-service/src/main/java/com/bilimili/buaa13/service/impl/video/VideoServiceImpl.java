@@ -333,4 +333,11 @@ public class VideoServiceImpl implements VideoService {
         }
         return map;
     }
+
+
+    @Override
+    public List<Video> getVideosByIds(List<Integer> videoIds) {
+        return videoMapper.selectBatchIds(videoIds);
+    }
+
 }

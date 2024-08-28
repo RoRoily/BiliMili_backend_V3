@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.bilimili.buaa13.tools.OssTool;
+import com.bilimili.buaa13.service.utils.CurrentUser;
+import com.bilimili.buaa13.service.post.PostService;
+
 import java.util.Date;
 import java.util.List;
 
@@ -18,17 +22,13 @@ public class PostController {
 
 
     @Autowired
-    private ArticleUploadService articleUploadService;
-    @Autowired
     private OssTool ossTool;
-
 
     @Autowired
     private PostMapper postMapper;
     @Autowired
+
     private CurrentUser currentUser;
-    @Autowired
-    private ArticleMapper articleMapper;
     @Autowired
     private PostService postService;
     /**

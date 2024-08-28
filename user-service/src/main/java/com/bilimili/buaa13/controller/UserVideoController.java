@@ -2,6 +2,11 @@ package com.bilimili.buaa13.controller;
 
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.UserVideo;
+import com.bilimili.buaa13.service.client.VideoServiceClient;
+import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
+import com.bilimili.buaa13.service.favorite.FavoriteService;
+import com.bilimili.buaa13.service.user.UserVideoService;
+import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +26,12 @@ public class UserVideoController {
 
     @Autowired
     private CurrentUser currentUser;
+
+    @Autowired
+    private UserVideoService  userVideoService;
+
+    @Autowired
+    private FavoriteVideoService favoriteVideoService;
 
 
 
@@ -75,16 +86,22 @@ public class UserVideoController {
      * 接收来自 video-service 的更新用户视频播放记录的请求
      * @param userVideo 用户视频信息
      * @return 操作结果
+     *
+     *
+     *
+     *
+     *
+     * @PostMapping("/updateUserVideo")
+     *     public ResponseEntity<String> updateUserVideo(@RequestBody UserVideo userVideo) {
+     *         boolean success = userVideoService.updateUserVideo(userVideo);
+     *         if (success) {
+     *             return ResponseEntity.ok("User video data updated successfully.");
+     *         } else {
+     *             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update user video data.");
+     *         }
+     *     }
      */
-    @PostMapping("/updateUserVideo")
-    public ResponseEntity<String> updateUserVideo(@RequestBody UserVideo userVideo) {
-        boolean success = userVideoService.updateUserVideo(userVideo);
-        if (success) {
-            return ResponseEntity.ok("User video data updated successfully.");
-        } else {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to update user video data.");
-        }
-    }
+
 
 
 }

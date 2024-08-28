@@ -24,19 +24,6 @@ public class ESTool {
     @Autowired
     private ElasticsearchClient client;
 
-    /**
-     * 添加视频文档
-     * @param video 视频类
-     */
-    public void addVideo(Video video) throws IOException {
-        try {
-            ESVideo esVideo = new ESVideo(video.getVid(), video.getUid(), video.getTitle(), video.getMainClassId(), video.getSubClassId(), video.getTags(), video.getStatus());
-            client.index(i -> i.index("video").id(esVideo.getVid().toString()).document(esVideo));
-        } catch (IOException e) {
-            log.error("添加视频文档到ElasticSearch时出错了：" + e);
-            throw e;
-        }
-    }
 
     /**
      * 删除视频文档
@@ -51,19 +38,6 @@ public class ESTool {
         }
     }
 
-    /**
-     * 更新视频文档
-     * @param video
-     */
-    public void updateVideo(Video video) throws IOException {
-        try {
-            ESVideo esVideo = new ESVideo(video.getVid(), video.getUid(), video.getTitle(), video.getMainClassId(), video.getSubClassId(), video.getTags(), video.getStatus());
-            client.update(u -> u.index("video").id(video.getVid().toString()).doc(esVideo), ESVideo.class);
-        } catch (IOException e) {
-            log.error("更新ElasticSearch视频文档时出错了：" + e);
-            throw e;
-        }
-    }
 
     /**
      * 查询相关数据数量
@@ -89,39 +63,6 @@ public class ESTool {
             return 0L;
         }
     }
-
-    /**
-     * 模糊匹配，分页查询
-     * @param keyword   查询关键词
-     * @param page  第几页 从1开始
-     * @param size  每页查多少条数据 一般30条
-     * @return 包含查到的数据id列表，按匹配分数排序
-     */
-    public List<Integer> searchVideosByKeyword(String keyword, Integer page, Integer size, boolean onlyPass) {
-        try {
-            List<Integer> list = new ArrayList<>();
-            Query query = Query.of(q -> q.multiMatch(m -> m.fields("title", "tags").query(keyword)));
-            Query query1 = Query.of(q -> q.constantScore(c -> c.filter(f -> f.term(t -> t.field("status").value(1)))));
-            Query bool = Query.of(q -> q.bool(b -> b.must(query1).must(query)));
-            SearchRequest searchRequest;
-            if (onlyPass) {
-                searchRequest = new SearchRequest.Builder().index("video").query(bool).from((page - 1) * size).size(size).build();
-            } else {
-                searchRequest = new SearchRequest.Builder().index("video").query(query).from((page - 1) * size).size(size).build();
-            }
-            SearchResponse<ESVideo> searchResponse = client.search(searchRequest, ESVideo.class);
-            for (Hit<ESVideo> hit : searchResponse.hits().hits()) {
-                if (hit.source() != null) {
-                    list.add(hit.source().getVid());
-                }
-            }
-            return list;
-        } catch (IOException e) {
-            log.error("查询ES相关视频文档时出错了：" + e);
-            return Collections.emptyList();
-        }
-    }
-
 
     /**
      * 添加用户文档

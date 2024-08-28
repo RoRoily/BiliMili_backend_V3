@@ -5,6 +5,7 @@ import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.mapper.FavoriteMapper;
 import com.bilimili.buaa13.service.favorite.FavoriteService;
 import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
+import com.bilimili.buaa13.service.user.UserVideoService;
 import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -31,6 +32,7 @@ public class FavoriteVideoController {
 
     @Autowired
     private UserVideoService userVideoService;
+
     @Autowired
     private FavoriteMapper favoriteMapper;
     /**

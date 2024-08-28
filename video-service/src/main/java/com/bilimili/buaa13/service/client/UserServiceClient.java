@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import java.util.*;
 
 //服务名称和url
 //用于接收video微服务模块传输的对象
@@ -28,4 +29,11 @@ public interface UserServiceClient {
 
     @PostMapping("/user/currentUser/isAdmin")
     Boolean currentIsAdmin();
+
+    //直接调用mapper中的方法即可
+    @GetMapping("/user/getVidsByFid/{fid}")
+    List<Integer> getVidsByFid(@PathVariable("fid") Integer fid);
+
+    @GetMapping("/user/getTimeByFid/{fid}")
+    List<Date> getTimeByFid(@PathVariable("fid") Integer fid);
 }
