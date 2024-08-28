@@ -11,7 +11,6 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-//收藏夹与视频的一次关系的记录
 public class FavoriteVideo {
     @TableId(type = IdType.AUTO)
     private Integer id;

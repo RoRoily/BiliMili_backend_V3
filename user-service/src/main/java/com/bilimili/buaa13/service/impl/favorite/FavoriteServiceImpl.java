@@ -1,13 +1,13 @@
-package com.bilimili.buaa13.service.impl.video;
+package com.bilimili.buaa13.service.impl.favorite;
 
 import com.alibaba.fastjson2.JSONArray;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import com.bilimili.buaa13.mapper.FavoriteMapper;
 import com.bilimili.buaa13.entity.Favorite;
 import com.bilimili.buaa13.entity.Video;
-import com.bilimili.buaa13.mapper.FavoriteMapper;
-import com.bilimili.buaa13.mapper.VideoMapper;
-import com.bilimili.buaa13.service.video.FavoriteService;
+import com.bilimili.buaa13.service.client.VideoServiceClient;
+import com.bilimili.buaa13.service.favorite.FavoriteService;
 import com.bilimili.buaa13.tools.RedisTool;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -27,7 +27,7 @@ public class FavoriteServiceImpl implements FavoriteService {
     private FavoriteMapper favoriteMapper;
 
     @Autowired
-    private VideoMapper videoMapper;
+    private VideoServiceClient videoServiceClient;
 
     @Autowired
     private RedisTool redisTool;
@@ -68,7 +68,8 @@ public class FavoriteServiceImpl implements FavoriteService {
                         Set<Object> set = redisTool.reverseRange("favorite_video:" + favorite.getFid(), 0, 0);    // 找到最近一个收藏的视频
                         if (set != null && !set.isEmpty()) {
                             Integer vid = (Integer) set.iterator().next();
-                            Video video = videoMapper.selectById(vid);
+                            //Video video = videoMapper.selectById(vid);
+                            Video video = videoServiceClient.getVideoById(vid);
                             favorite.setCover(video.getCoverUrl());
                         }
                     }

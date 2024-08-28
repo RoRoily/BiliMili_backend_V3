@@ -1,4 +1,4 @@
-package com.bilimili.buaa13.service.impl.video;
+package com.bilimili.buaa13.service.impl.favorite;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
@@ -6,7 +6,7 @@ import com.bilimili.buaa13.entity.Favorite;
 import com.bilimili.buaa13.entity.FavoriteVideo;
 import com.bilimili.buaa13.mapper.FavoriteMapper;
 import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
-import com.bilimili.buaa13.service.video.FavoriteVideoService;
+import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
 import com.bilimili.buaa13.tools.RedisTool;
 import org.apache.ibatis.session.ExecutorType;
 import org.apache.ibatis.session.SqlSession;
@@ -36,7 +36,7 @@ public class FavoriteVideoServiceImpl implements FavoriteVideoService {
 
     @Override
     public Set<Integer> findFidsOfCollected(Integer vid, Set<Integer> fids) {
-        if (fids.size() == 0) return new HashSet<>();
+        if (fids.isEmpty()) return new HashSet<>();
         QueryWrapper<FavoriteVideo> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("vid", vid)
                 .in("fid", fids)

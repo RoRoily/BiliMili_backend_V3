@@ -1,17 +1,13 @@
 package com.bilimili.buaa13.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
 import com.bilimili.buaa13.entity.ResponseResult;
+import com.bilimili.buaa13.service.client.UserServiceClient;
 import com.bilimili.buaa13.service.video.VideoReviewService;
-import com.bilimili.buaa13.service.article.ArticleService;
-import org.springframework.web.bind.annotation.RestController;
-import com.bilimili.buaa13.service.user.UserService;
 import com.bilimili.buaa13.service.video.VideoService;
-import com.bilimili.buaa13.service.utils.CurrentUser;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 @RestController
@@ -25,12 +21,8 @@ public class VideoReviewController {
 
     @Autowired
     private VideoService videoService;
-
     @Autowired
-    private CurrentUser currentUser;
-
-
-
+    private UserServiceClient userServiceClient;
 
     /**
      * 审核 查询对应状态的视频数量
@@ -86,7 +78,7 @@ public class VideoReviewController {
     @GetMapping("/review/video/getone")
     public ResponseResult getOneVideo(@RequestParam("vid") Integer vid) {
         ResponseResult responseResult = new ResponseResult();
-        if (!currentUser.isAdmin()) {
+        if (!userServiceClient.currentIsAdmin()) {
             responseResult.setCode(403);
             responseResult.setMessage("您不是管理员，无权访问");
             return responseResult;

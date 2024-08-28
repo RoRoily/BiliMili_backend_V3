@@ -1,4 +1,4 @@
-package com.bilimili.buaa13.service.user;
+package com.bilimili.buaa13.service.favorite;
 
 import com.bilimili.buaa13.entity.Favorite;
 
