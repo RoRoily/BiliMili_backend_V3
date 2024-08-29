@@ -14,7 +14,7 @@ import java.util.Random;
 
 
 @RestController
-@RequestMapping("/video")
+@RequestMapping
 public class VideoStatusController {
 
 

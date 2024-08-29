@@ -54,7 +54,7 @@ public class UserAccountController {
      * @param map 包含 username password 的 map
      * @return 响应对象
      */
-    @PostMapping("/user/user/account/login")
+    @PostMapping("/user/account/login")
     public ResponseResult login(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
@@ -68,7 +68,7 @@ public class UserAccountController {
      * @param map 包含 username password 的 map
      * @return 响应对象
      */
-    @PostMapping("/user/admin/account/login")
+    @PostMapping("/admin/account/login")
     public ResponseResult adminLogin(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
@@ -82,7 +82,7 @@ public class UserAccountController {
      * 获取当前登录用户信息接口
      * @return 响应对象
      */
-    @GetMapping("/user/user/personal/info")
+    @GetMapping("/user/personal/info")
     public ResponseResult personalInfo() {
         return userAccountService.personalInformation();
     }
@@ -91,7 +91,7 @@ public class UserAccountController {
      * 获取当前登录管理员信息接口
      * @return 响应对象
      */
-    @GetMapping("/user/admin/personal/info")
+    @GetMapping("/admin/personal/info")
     public ResponseResult adminPersonalInfo() {
         return userAccountService.adminPersonalInformation();
     }
@@ -99,7 +99,7 @@ public class UserAccountController {
     /**
      * 退出登录接口
      */
-    @GetMapping("/user/user/account/logout")
+    @GetMapping("/user/account/logout")
     public void logout() {
         userAccountService.userLogout();
     }
@@ -107,7 +107,7 @@ public class UserAccountController {
     /**
      * 管理员退出登录接口
      */
-    @GetMapping("/user/admin/account/logout")
+    @GetMapping("/admin/account/logout")
     public void adminLogout() {
         userAccountService.adminLogout();
     }
@@ -118,7 +118,7 @@ public class UserAccountController {
      * @param npw   新密码
      * @return  响应对象
      */
-    @PostMapping("/user/user/password/update")
+    @PostMapping("/user/password/update")
     public ResponseResult updatePassword(@RequestParam("pw") String pw, @RequestParam("npw") String npw) {
         return userAccountService.updatePassword(pw, npw);
     }

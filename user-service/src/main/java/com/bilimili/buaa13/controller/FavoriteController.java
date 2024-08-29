@@ -229,7 +229,7 @@ public class FavoriteController {
      * @param uid   被查看的用户ID
      * @return  包含收藏夹列表的响应对象
      */
-    @GetMapping("/user/favorite/get-all/user")
+    @GetMapping("/favorite/get-all/user")
     public ResponseResult getAllFavoritiesForUser(@RequestParam("uid") Integer uid) {
         Integer loginUid = currentUser.getUserId();
         //-------------------------------------------------------------------------------------------------
@@ -258,7 +258,7 @@ public class FavoriteController {
      * @param uid   被查看的用户ID
      * @return  包含收藏夹列表的响应对象
      */
-    @GetMapping("/user/favorite/get-all/visitor")
+    @GetMapping("/favorite/get-all/visitor")
     public ResponseResult getAllFavoritiesForVisitor(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         responseResult.setData(favoriteService.getFavorites(uid, false));
@@ -272,7 +272,7 @@ public class FavoriteController {
      * @param visible   是否公开 0否 1是
      * @return  包含新创建的收藏夹信息的响应对象
      */
-    @PostMapping("/user/favorite/create")
+    @PostMapping("/favorite/create")
     public ResponseResult createFavorite(@RequestParam("title") String title,
                                          @RequestParam("desc") String desc,
                                          @RequestParam("visible") Integer visible) {

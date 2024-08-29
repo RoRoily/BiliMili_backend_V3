@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/user")
+@RestController
 public class UpdateController {
 
     @Autowired

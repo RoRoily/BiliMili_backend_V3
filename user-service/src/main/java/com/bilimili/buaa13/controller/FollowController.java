@@ -35,7 +35,7 @@ public class FollowController {
     /**
      * 判断自己是否是某个用户的粉丝
      */
-    @GetMapping("/user/isFans")
+    @GetMapping("/isFans")
     public ResponseResult isFans(@RequestParam("uidFollow") Integer up, @RequestParam("uidFans") Integer fan) {
         ResponseResult responseResult = new ResponseResult();
         List<Integer> fans = followService.getUidFans(up,true);
@@ -80,7 +80,7 @@ public class FollowController {
      * @param uidFollow   被关注者ID
      * @return  包含关注列表的响应对象
      */
-    @PostMapping("/user/following/update")
+    @PostMapping("/following/update")
     public ResponseResult addFollowing(@RequestParam("uidFollow") Integer uidFollow,
                                        @RequestParam("uidFans") Integer uidFans,
                                        @RequestParam("isfollowing") boolean isfollowing) throws JsonProcessingException {

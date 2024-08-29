@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @Slf4j
-@RestController("/video")
+@RestController
 public class UserCommentController {
     @Autowired
     private UserServiceClient userServiceClient;

@@ -33,7 +33,7 @@ public class PostController {
      * @param content 动态内容
      * @return  响应对象
      */
-    @PostMapping("/user/post/add")
+    @PostMapping("/post/add")
     public ResponseResult addAllArticle(
             @RequestParam("uid") Integer uid,
             @RequestParam("content") String content
@@ -56,7 +56,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/user/post/get")
+    @GetMapping("/post/get")
     public ResponseResult getOneUserInfo(@RequestParam("uid") Integer uid) {
         System.out.println("被要求传输post,uid:" + uid);
         ResponseResult responseResult = new ResponseResult();

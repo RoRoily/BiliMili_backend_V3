@@ -22,7 +22,7 @@ public class UserController {
      * @param gender    性别：0 女 1 男 2 保密
      * @return
      */
-    @PostMapping("/user/user/info/update")
+    @PostMapping("/user/info/update")
     public ResponseResult updateUserInfo(@RequestParam("nickname") String nickname,
                                          @RequestParam("description") String desc,
                                          @RequestParam("gender") Integer gender) {
@@ -43,7 +43,7 @@ public class UserController {
      * @param file  头像文件
      * @return  成功则返回新头像url
      */
-    @PostMapping("/user/user/avatar/update")
+    @PostMapping("/user/avatar/update")
     public ResponseResult updateUserAvatar(@RequestParam("file") MultipartFile file) {
         Integer uid = currentUser.getUserId();
         try {
@@ -55,7 +55,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/user/info/get-one")
+    @GetMapping("/user/info/get-one")
     public ResponseResult getOneUserInfo(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         responseResult.setData(userService.getUserByUId(uid));

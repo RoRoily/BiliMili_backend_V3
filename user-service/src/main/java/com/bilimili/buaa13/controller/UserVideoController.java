@@ -55,7 +55,7 @@ public class UserVideoController {
      * @param vid   视频ID
      * @return  返回用户与该视频的交互数据
      */
-    @PostMapping("/user/video/play/user")
+    @PostMapping("/video/play/user")
     public ResponseResult newPlayWithLoginUser(@RequestParam("vid") Integer vid) {
         Integer uid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();

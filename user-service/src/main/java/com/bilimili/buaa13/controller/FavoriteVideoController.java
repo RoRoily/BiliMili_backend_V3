@@ -37,7 +37,7 @@ public class FavoriteVideoController {
      * @param vid   视频id
      * @return  收藏了该视频的收藏夹列表
      */
-    @GetMapping("/user/video/collected-fids")
+    @GetMapping("/video/collected-fids")
     public ResponseResult getCollectedFids(@RequestParam("vid") Integer vid) {
         Integer uid = currentUser.getUserId();
         Set<Integer> fids = findFidsOfUserFavorites(uid);
@@ -53,7 +53,7 @@ public class FavoriteVideoController {
      * @param fid   收藏夹id
      * @return  响应对象
      */
-    @PostMapping("/user/video/cancel-collect")
+    @PostMapping("/video/cancel-collect")
     public ResponseResult cancelCollect(@RequestParam("vid") Integer vid, @RequestParam("fid") Integer fid) {
         ResponseResult responseResult = new ResponseResult();
         Integer uid = currentUser.getUserId();
@@ -82,7 +82,7 @@ public class FavoriteVideoController {
      * @param removeArray   包含需要移出收藏的多个收藏夹ID组成的字符串，形式如 1,12,13,20 不能含有字符"["和"]"
      * @return  无数据返回
      */
-    @PostMapping("/user/video/collect")
+    @PostMapping("/video/collect")
     public ResponseResult collectVideo(@RequestParam("vid") Integer vid,
                                        @RequestParam("adds") String[] addArray,
                                        @RequestParam("removes") String[] removeArray) {

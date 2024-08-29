@@ -12,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 
-@RestController("/video")
+@RestController
 public class VideoUploadController {
     @Autowired
     private VideoUploadService videoUploadService;
@@ -22,7 +22,7 @@ public class VideoUploadController {
      * @param hash 视频的hash值
      * @return
      */
-    @GetMapping("/video/ask-chunk")
+    @GetMapping("/ask-chunk")
     public ResponseResult askChunk(@RequestParam("hash") String hash) {
         return videoUploadService.getNextCurrentFragment(hash);
     }
@@ -35,7 +35,7 @@ public class VideoUploadController {
      * @return
      * @throws IOException
      */
-    @PostMapping("/video/upload-chunk")
+    @PostMapping("/upload-chunk")
     public ResponseResult uploadFragment(@RequestParam("chunk") MultipartFile fragment,
                                       @RequestParam("hash") String hash,
                                       @RequestParam("index") Integer index) throws IOException {
@@ -54,7 +54,7 @@ public class VideoUploadController {
      * @param hash 视频的hash值
      * @return
      */
-    @GetMapping("/video/cancel-upload")
+    @GetMapping("/cancel-upload")
     public ResponseResult cancelUpload(@RequestParam("hash") String hash) {
         return videoUploadService.cancelUploadAndDelete(hash);
     }
@@ -74,7 +74,7 @@ public class VideoUploadController {
      * @param description 简介
      * @return 响应对象
      */
-    @PostMapping("/video/add")
+    @PostMapping("/add")
     public ResponseResult addVideo(@RequestParam("cover") MultipartFile cover,
                                    @RequestParam("hash") String hash,
                                    @RequestParam("title") String title,
