@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.*;
 
-@RestController("/video")
+@RestController
 public class VideoController {
 
     @Autowired
@@ -45,7 +45,7 @@ public class VideoController {
      * @param status 要修改的状态，1通过 2不通过 3删除
      * @return 无data返回 仅返回响应
      */
-    @PostMapping("/video/change/status")
+    @PostMapping("/video/video/change/status")
     public ResponseResult updateStatus(@RequestParam("vid") Integer vid,
                                        @RequestParam("status") Integer status) {
         try {

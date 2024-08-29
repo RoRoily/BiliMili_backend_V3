@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@RestController("/video")
+@RestController
 public class CategoryController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class CategoryController {
      * 获取全部分区接口
      * @return 响应对象
      */
-    @GetMapping("/category/getall")
+    @GetMapping("/video/category/getall")
     public ResponseResult getAll() {
         //--------------------------------------------------------------------------------------------------------
         //修改于2024.08.16
@@ -75,7 +75,7 @@ public class CategoryController {
      *
      * **/
 
-    @GetMapping("/category/getone")
+    @GetMapping("/video/category/getone")
     public ResponseResult getOne(Integer mcId,Integer scId)
     {
         return categoryService.getAll();
@@ -84,7 +84,7 @@ public class CategoryController {
 
 
 
-    @GetMapping("/category/getAPage")
+    @GetMapping("/video/category/getAPage")
     public ResponseResult getAPage(Integer mcId, Integer num){
         String mainCategoryId = mcId.toString();
         String subCategoryId = num.toString();

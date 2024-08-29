@@ -6,6 +6,7 @@ import com.bilimili.buaa13.entity.dto.UserDTO;
 import com.bilimili.buaa13.im.IMServer;
 import com.bilimili.buaa13.mapper.FavoriteMapper;
 import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
+import com.bilimili.buaa13.mapper.UserMapper;
 import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
 import com.bilimili.buaa13.service.message.MessageUnreadService;
 import com.bilimili.buaa13.service.user.UserService;
@@ -22,9 +23,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.*;
 
 @RestController
-@RequestMapping("/user")
 public class UserClientController {
 
+
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private CurrentUser currentUser;
     @Autowired
@@ -46,23 +49,23 @@ public class UserClientController {
     private FavoriteVideoService favoriteVideoService;
 
     //从userService中寻找提供的服务
-    @GetMapping("/{uid}")
+    @GetMapping("/user/{uid}")
     public UserDTO getUserById(@PathVariable("uid") Integer uid){
         return userService.getUserByUId(uid);
     }
 
-    @PostMapping("/currentUser/getId")
+    @PostMapping("/user/currentUser/getId")
     public Integer getCurrentUserId(){
         return currentUser.getUserId();
     }
 
-    @PostMapping("/currentUser/isAdmin")
+    @PostMapping("/user/currentUser/isAdmin")
     public Boolean currentIsAdmin(){
         return currentUser.isAdmin();
     }
 
 
-    @PostMapping("/updateFavoriteVideo")
+    @PostMapping("/user/updateFavoriteVideo")
     public ResponseEntity<Void> updateFavoriteVideo(@RequestBody List<Map<String, Object>> result, @RequestParam("fid") Integer fid) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
             result.stream().parallel().forEach(map -> {
@@ -76,7 +79,7 @@ public class UserClientController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/handle_comment")
+    @PostMapping("/user/handle_comment")
     public void handleComment(@RequestParam("uid") Integer uid,
                               @RequestParam("toUid") Integer toUid,
                               @RequestParam("id") Integer id){
@@ -96,7 +99,10 @@ public class UserClientController {
         }
     }
 
-    @PostMapping("/set/favorite")
+
+
+
+    @PostMapping("/user/set/favorite")
     ResponseResult setFavorite(@RequestParam("fid") Integer fid ,
                                @RequestParam("vid") String vids){
         ResponseResult responseResult = new ResponseResult();
@@ -136,5 +142,19 @@ public class UserClientController {
             responseResult.setData(false);
         }
         return responseResult;
+    }
+
+    @GetMapping("/user/getUserByName/{account}")
+    User getUserByName(@PathVariable("account") String account){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account", account);
+        queryWrapper.ne("state", 2);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null) {
+            System.out.println("found user by name failed");
+            return null;
+        }
+
+        return user;
     }
 }

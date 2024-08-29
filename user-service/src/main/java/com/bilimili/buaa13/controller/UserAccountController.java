@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/user")
 public class UserAccountController {
 
     private static final Logger log = LoggerFactory.getLogger(UserAccountController.class);
@@ -31,7 +30,7 @@ public class UserAccountController {
      * @return 响应对象
      */
     // 前端使用axios传递的data是Content-Type: application/json，需要用@RequestBody获取参数
-    @PostMapping("/user/account/register")
+    @PostMapping("/user/user/account/register")
     public ResponseResult register(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
@@ -55,7 +54,7 @@ public class UserAccountController {
      * @param map 包含 username password 的 map
      * @return 响应对象
      */
-    @PostMapping("/user/account/login")
+    @PostMapping("/user/user/account/login")
     public ResponseResult login(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
@@ -69,7 +68,7 @@ public class UserAccountController {
      * @param map 包含 username password 的 map
      * @return 响应对象
      */
-    @PostMapping("/admin/account/login")
+    @PostMapping("/user/admin/account/login")
     public ResponseResult adminLogin(@RequestBody Map<String, String> map) {
         String username = map.get("username");
         String password = map.get("password");
@@ -83,7 +82,7 @@ public class UserAccountController {
      * 获取当前登录用户信息接口
      * @return 响应对象
      */
-    @GetMapping("/user/personal/info")
+    @GetMapping("/user/user/personal/info")
     public ResponseResult personalInfo() {
         return userAccountService.personalInformation();
     }
@@ -92,7 +91,7 @@ public class UserAccountController {
      * 获取当前登录管理员信息接口
      * @return 响应对象
      */
-    @GetMapping("/admin/personal/info")
+    @GetMapping("/user/admin/personal/info")
     public ResponseResult adminPersonalInfo() {
         return userAccountService.adminPersonalInformation();
     }
@@ -100,7 +99,7 @@ public class UserAccountController {
     /**
      * 退出登录接口
      */
-    @GetMapping("/user/account/logout")
+    @GetMapping("/user/user/account/logout")
     public void logout() {
         userAccountService.userLogout();
     }
@@ -108,7 +107,7 @@ public class UserAccountController {
     /**
      * 管理员退出登录接口
      */
-    @GetMapping("/admin/account/logout")
+    @GetMapping("/user/admin/account/logout")
     public void adminLogout() {
         userAccountService.adminLogout();
     }
@@ -119,7 +118,7 @@ public class UserAccountController {
      * @param npw   新密码
      * @return  响应对象
      */
-    @PostMapping("/user/password/update")
+    @PostMapping("/user/user/password/update")
     public ResponseResult updatePassword(@RequestParam("pw") String pw, @RequestParam("npw") String npw) {
         return userAccountService.updatePassword(pw, npw);
     }

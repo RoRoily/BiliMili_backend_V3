@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/user")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -23,7 +22,7 @@ public class UserController {
      * @param gender    性别：0 女 1 男 2 保密
      * @return
      */
-    @PostMapping("/user/info/update")
+    @PostMapping("/user/user/info/update")
     public ResponseResult updateUserInfo(@RequestParam("nickname") String nickname,
                                          @RequestParam("description") String desc,
                                          @RequestParam("gender") Integer gender) {
@@ -44,7 +43,7 @@ public class UserController {
      * @param file  头像文件
      * @return  成功则返回新头像url
      */
-    @PostMapping("/user/avatar/update")
+    @PostMapping("/user/user/avatar/update")
     public ResponseResult updateUserAvatar(@RequestParam("file") MultipartFile file) {
         Integer uid = currentUser.getUserId();
         try {
@@ -56,7 +55,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/user/info/get-one")
+    @GetMapping("/user/user/info/get-one")
     public ResponseResult getOneUserInfo(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         responseResult.setData(userService.getUserByUId(uid));

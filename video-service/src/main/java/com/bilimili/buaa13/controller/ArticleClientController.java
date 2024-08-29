@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Map;
 
-@RestController("/video")
+@RestController
 public class ArticleClientController {
     @Autowired
     private VideoMapper videoMapper;
     @Autowired
     private VideoStatusMapper videoStatusMapper;
-    @GetMapping("/get")
+    @GetMapping("/video/get")
     public Video getVideo(@RequestParam("vid") Integer vid){
         QueryWrapper<Video> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("vid", vid).ne("status", 3);
@@ -27,7 +27,7 @@ public class ArticleClientController {
         return videoMapper.selectOne(queryWrapper);
     }
 
-    @PostMapping("/set/history")
+    @PostMapping("/video/set/history")
     public void setHistory(@RequestParam List<Integer> vidList,
                            @RequestParam Map<String,Object> dataMap){
         HistoryController.setHistoryMap(vidList, videoMapper, videoStatusMapper,dataMap);

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-@RestController("/video")
+@RestController
 public class DanmuController {
 
     @Autowired
@@ -35,7 +35,7 @@ public class DanmuController {
      * @param vid   视频ID
      * @return  响应对象
      */
-    @GetMapping("/danmu-list/{vid}")
+    @GetMapping("/video/danmu-list/{vid}")
     public ResponseResult getBarrageList(@PathVariable("vid") String vid) {
         Set<Object> idset = redisTemplate.opsForSet().members("barrage_idset:" + vid);
         int vidInt = 0;
@@ -62,7 +62,7 @@ public class DanmuController {
      * @param id    弹幕id
      * @return  响应对象
      */
-    @PostMapping("/danmu/delete")
+    @PostMapping("/video/danmu/delete")
     public ResponseResult deleteDanmu(@RequestParam("id") Integer id) {
 
         while (!individualDanmuList.isEmpty()) {

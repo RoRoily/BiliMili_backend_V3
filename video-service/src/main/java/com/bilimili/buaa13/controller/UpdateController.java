@@ -9,7 +9,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@RestController("/user")
+@RestController
 public class UpdateController {
 
     @Autowired
@@ -29,7 +29,7 @@ public class UpdateController {
      * @param content   评论内容
      * @return  响应对象
      */
-    @PostMapping("/update/add")
+    @PostMapping("/video/update/add")
     public ResponseResult addComment(
             @RequestParam("vid") Integer vid,
             @RequestParam("root_id") Integer rootId,

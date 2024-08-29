@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.Map;
 
 @Slf4j
-@RestController("/video")
+@RestController
 public class UserCommentController {
     @Autowired
     private UserServiceClient userServiceClient;
@@ -26,7 +26,7 @@ public class UserCommentController {
     /**
      * 获取用户点赞点踩评论集合
      */
-    @GetMapping("/comment/get-like-and-dislike")
+    @GetMapping("/video/comment/get-like-and-dislike")
     public ResponseResult getLikeAndDislike() {
         Integer uid = userServiceClient.getCurrentUserId();
         Map<String, Object> map = userCommentService.getUserUpVoteAndDownVote(uid);
@@ -42,7 +42,7 @@ public class UserCommentController {
      * @param isLike true 赞 false 踩
      * @param isCancel  true 取消 false 点中
      */
-    @PostMapping("/comment/love-or-not")
+    @PostMapping("/video/comment/love-or-not")
     public ResponseResult loveOrNot(@RequestParam("id") Integer id,
                                     @RequestParam("isLike") boolean isLike,
                                     @RequestParam("isCancel") boolean isCancel) {
@@ -56,7 +56,7 @@ public class UserCommentController {
      * @param uid   UP主uid
      * @return  点赞的评论id列表
      */
-    @GetMapping("/comment/get-up-like")
+    @GetMapping("/video/comment/get-up-like")
     public ResponseResult getUpLike(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         Map<String, Object> map = userCommentService.getUserUpVoteAndDownVote(uid);
@@ -69,7 +69,7 @@ public class UserCommentController {
      * @param uid   UP主uid
      * @return  点踩的评论id列表
      */
-    @GetMapping("/comment/get-up-down_vote")
+    @GetMapping("/video/comment/get-up-down_vote")
     public ResponseResult getUpDownVote(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         Map<String, Object> map = userCommentService.getUserUpVoteAndDownVote(uid);

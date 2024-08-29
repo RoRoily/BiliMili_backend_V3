@@ -15,7 +15,6 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
 public class PostController {
 
 
@@ -34,7 +33,7 @@ public class PostController {
      * @param content 动态内容
      * @return  响应对象
      */
-    @PostMapping("/post/add")
+    @PostMapping("/user/post/add")
     public ResponseResult addAllArticle(
             @RequestParam("uid") Integer uid,
             @RequestParam("content") String content
@@ -57,7 +56,7 @@ public class PostController {
         }
     }
 
-    @GetMapping("/post/get")
+    @GetMapping("/user/post/get")
     public ResponseResult getOneUserInfo(@RequestParam("uid") Integer uid) {
         System.out.println("被要求传输post,uid:" + uid);
         ResponseResult responseResult = new ResponseResult();

@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping("/user")
 public class UserVideoController {
 
     @Autowired
@@ -56,7 +55,7 @@ public class UserVideoController {
      * @param vid   视频ID
      * @return  返回用户与该视频的交互数据
      */
-    @PostMapping("/video/play/user")
+    @PostMapping("/user/video/play/user")
     public ResponseResult newPlayWithLoginUser(@RequestParam("vid") Integer vid) {
         Integer uid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -74,7 +73,7 @@ public class UserVideoController {
      * @param isSet     点还是取消 true点 false取消
      * @return 返回用户与该视频更新后的交互数据
      */
-    @PostMapping("/video/love-or-not")
+    @PostMapping("/user/video/love-or-not")
     public ResponseResult loveOrNot(@RequestParam("vid") Integer vid,
                                     @RequestParam("isLove") boolean isLove,
                                     @RequestParam("isSet") boolean isSet) {

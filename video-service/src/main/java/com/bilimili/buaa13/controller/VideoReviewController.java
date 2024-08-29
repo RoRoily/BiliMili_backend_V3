@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
-@RestController("/video")
+@RestController
 public class VideoReviewController {
 
 
@@ -29,7 +29,7 @@ public class VideoReviewController {
      * @param status 状态 0待审核 1通过 2未通过
      * @return
      */
-    @GetMapping("/review/video/total")
+    @GetMapping("/video/review/video/total")
     public ResponseResult getTotal(@RequestParam("vstatus") Integer status) {
 
         //----------------------------------------------------------------------------------
@@ -54,7 +54,7 @@ public class VideoReviewController {
      * @param quantity  每页的数量
      * @return
      */
-    @GetMapping("/review/video/getpage")
+    @GetMapping("/video/review/video/getpage")
     public ResponseResult getVideos(@RequestParam("vstatus") Integer status,
                                     @RequestParam(value = "page", defaultValue = "1") Integer page,
                                     @RequestParam(value = "quantity", defaultValue = "10") Integer quantity) {
@@ -75,7 +75,7 @@ public class VideoReviewController {
      * @param vid 视频id
      * @return
      */
-    @GetMapping("/review/video/getone")
+    @GetMapping("/video/review/video/getone")
     public ResponseResult getOneVideo(@RequestParam("vid") Integer vid) {
         ResponseResult responseResult = new ResponseResult();
         if (!userServiceClient.currentIsAdmin()) {

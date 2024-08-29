@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.*;
 
 @RestController
-@RequestMapping("/user")
 public class UserRecordController {
     @Autowired
     private UserRecordService userRecordService;
@@ -22,7 +21,7 @@ public class UserRecordController {
      * 查询用户7天数据
      * @param uid 用户uid
      */
-    @GetMapping("/user_record")
+    @GetMapping("/user/user_record")
     public ResponseResult getUserRecord(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         try{

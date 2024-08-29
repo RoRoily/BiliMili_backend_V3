@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.*;
  * **/
 @Service
 @RestController
-@RequestMapping("/video")
 public class ClientController {
 
     @Autowired
@@ -28,7 +27,7 @@ public class ClientController {
 
 
     // 通过视频ID获取视频详情
-    @GetMapping("/{vid}")
+    @GetMapping("/video/{vid}")
     public ResponseResult getVideoById(@PathVariable("vid") Integer vid) {
         Video video = videoMapper.selectById(vid);
         if (video != null) {
@@ -39,7 +38,7 @@ public class ClientController {
     }
 
     // 通过视频ID获取视频状态
-    @GetMapping("/videoStatus/{vid}")
+    @GetMapping("/video/videoStatus/{vid}")
     public ResponseResult getVideoStatusById(@PathVariable("vid") Integer vid) {
         VideoStatus videoStatus = videoStatusService.getStatusByVideoId(vid);
         if (videoStatus != null) {
@@ -50,7 +49,7 @@ public class ClientController {
     }
 
     // 更新视频状态
-    @PostMapping("/updateStatus")
+    @PostMapping("/video/updateStatus")
     public ResponseResult updateVideoStatus(@RequestParam("vid") Integer vid,
                                             @RequestParam("statusType") String statusType,
                                             @RequestParam("increment") Boolean increment,
@@ -65,7 +64,7 @@ public class ClientController {
     }
 
     // 更新视频的点赞或差评数
-    @PostMapping("/updateGoodAndBad")
+    @PostMapping("/video/updateGoodAndBad")
     public ResponseResult updateGoodAndBad(@RequestParam("vid") Integer vid,
                                            @RequestParam("addGood") Boolean addGood) {
         try {

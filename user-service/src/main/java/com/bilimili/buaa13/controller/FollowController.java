@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/user")
 public class FollowController {
     @Autowired
     private FollowService followService;
@@ -22,7 +21,7 @@ public class FollowController {
      * @param uid   被查看的用户ID
      * @return  包含关注列表的响应对象
      */
-    @GetMapping("/following/get-all/user")
+    @GetMapping("/user/following/get-all/user")
     public ResponseResult getAllFollowingForUser(@RequestParam("uid") Integer uid) {
         Integer loginUid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -36,7 +35,7 @@ public class FollowController {
     /**
      * 判断自己是否是某个用户的粉丝
      */
-    @GetMapping("/isFans")
+    @GetMapping("/user/isFans")
     public ResponseResult isFans(@RequestParam("uidFollow") Integer up, @RequestParam("uidFans") Integer fan) {
         ResponseResult responseResult = new ResponseResult();
         List<Integer> fans = followService.getUidFans(up,true);
@@ -54,7 +53,7 @@ public class FollowController {
     /**
      * 测试
      */
-    @GetMapping("/fans/get-all/userTest")
+    @GetMapping("/user/fans/get-all/userTest")
     public ResponseResult getAllFansForUserTest(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         responseResult.setData(followService.getUidFans(uid, true));
@@ -65,7 +64,7 @@ public class FollowController {
      * @param uid   被查看的用户ID
      * @return  包含关注列表的响应对象
      */
-    @GetMapping("/fans/get-all/user")
+    @GetMapping("/user/fans/get-all/user")
     public ResponseResult getAllFansForUser(@RequestParam("uid") Integer uid) {
         Integer loginUid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -81,7 +80,7 @@ public class FollowController {
      * @param uidFollow   被关注者ID
      * @return  包含关注列表的响应对象
      */
-    @PostMapping("/following/update")
+    @PostMapping("/user/following/update")
     public ResponseResult addFollowing(@RequestParam("uidFollow") Integer uidFollow,
                                        @RequestParam("uidFans") Integer uidFans,
                                        @RequestParam("isfollowing") boolean isfollowing) throws JsonProcessingException {
@@ -102,7 +101,7 @@ public class FollowController {
      * @param uidFollow   被关注者ID
      * @return  包含关注列表的响应对象
      */
-    @PostMapping("/follow/delFollow-one/")
+    @PostMapping("/user/follow/delFollow-one/")
     public ResponseResult delFollowing(@RequestParam("uidFollow") Integer uidFollow) throws JsonProcessingException {
         Integer loginUid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -115,7 +114,7 @@ public class FollowController {
      * @param visible 权限
      * @return  包含关注列表的响应对象
      */
-    @PostMapping("/follow/updateVisible/")
+    @PostMapping("/user/follow/updateVisible/")
     public ResponseResult updateUserVisible(@RequestParam("visible") Integer visible){
         ResponseResult responseResult = new ResponseResult();
         Integer loginUid = currentUser.getUserId();
@@ -130,7 +129,7 @@ public class FollowController {
      * @param uidFans   粉丝ID
      * @return  包含关注列表的响应对象
      */
-    @GetMapping("/followed/checkRelation")
+    @GetMapping("/user/followed/checkRelation")
     public ResponseResult getIsHisFans(@RequestParam("uidFollow") Integer uidFollow,
                                        @RequestParam("uidFans") Integer uidFans) {
         try{

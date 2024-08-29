@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 
-@RestController("/video")
+@RestController
 public class CommentController {
     @Autowired
     private CommentService commentService;
@@ -34,7 +34,7 @@ public class CommentController {
      * @param sortType  排序类型 1 按热度排序 2 按时间排序
      * @return  评论树列表
      */
-    @GetMapping("/comment/get")
+    @GetMapping("/video/comment/get")
     public ResponseResult getCritiqueTreeByAid(@RequestParam("vid") Integer vid,
                                               @RequestParam("offset") Long offset,
                                               @RequestParam("type") Integer sortType) {
@@ -66,7 +66,7 @@ public class CommentController {
      * @param id 根评论id
      * @return 完整的一棵包含全部评论的评论树
      */
-    @GetMapping("/comment/reply/get-more")
+    @GetMapping("/video/comment/reply/get-more")
     public CommentTree getMoreCritiqueById(@RequestParam("id") Integer id) {
         return commentService.getMoreCommentsById(id);
     }
@@ -80,7 +80,7 @@ public class CommentController {
      * @param content   评论内容
      * @return  响应对象
      */
-    @PostMapping("/comment/add")
+    @PostMapping("/video/comment/add")
     public ResponseResult addCritique(
             @RequestParam("vid") Integer vid,
             @RequestParam("root_id") Integer rootId,
@@ -108,7 +108,7 @@ public class CommentController {
      * @param id 评论id
      * @return  响应对象
      */
-    @PostMapping("/comment/delete")
+    @PostMapping("/video/comment/delete")
     public ResponseResult delCritique(@RequestParam("id") Integer id) {
         Integer loginUid = userServiceClient.getCurrentUserId();
         Boolean Admin = userServiceClient.currentIsAdmin();
@@ -122,7 +122,7 @@ public class CommentController {
      * @param size 每页数量
      * @return 包含评论列表的响应对象
      */
-    @GetMapping("/comment/user/get")
+    @GetMapping("/video/comment/user/get")
     public ResponseResult getCommentsByUser(@RequestParam("user_id") Integer userId,
                                             @RequestParam("page") Long page,
                                             @RequestParam("size") Integer size) {
@@ -142,7 +142,7 @@ public class CommentController {
      * @param id 评论id
      * @return 响应对象
      */
-    @PostMapping("/comment/like")
+    @PostMapping("/video/comment/like")
     public ResponseResult likeCritique(@RequestParam("id") Integer id) {
         Integer userId = userServiceClient.getCurrentUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -163,7 +163,7 @@ public class CommentController {
      * @param reason 举报原因
      * @return 响应对象
      */
-    @PostMapping("/comment/report")
+    @PostMapping("/video/comment/report")
     public ResponseResult reportCritique(@RequestParam("id") Integer id,
                                          @RequestParam("reason") String reason) {
         Integer userId = userServiceClient.getCurrentUserId();

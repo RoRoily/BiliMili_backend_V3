@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/user")
 public class MessageUnreadController {
 
     @Autowired
@@ -23,7 +22,7 @@ public class MessageUnreadController {
      * @param column    msg_unread表列名 "reply"/"at"/"love"/"system"/"whisper"/"dynamic"
      * @return 响应结果，包含指定列的未读消息数
      */
-    @GetMapping("/msg-unread/column")
+    @GetMapping("/user/msg-unread/column")
     public ResponseResult getColumnUnread(@RequestParam("column") String column) {
         Integer uid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -34,7 +33,7 @@ public class MessageUnreadController {
      * @param columns   需要清除的列名列表
      * @return 响应结果，表示批量清除操作是否成功
      */
-    @PostMapping("/msg-unread/clear-batch")
+    @PostMapping("/user/msg-unread/clear-batch")
     public ResponseResult clearBatchUnread(@RequestParam("columns") String[] columns) {
         Integer uid = currentUser.getUserId();
         for (String column : columns) {
@@ -49,7 +48,7 @@ public class MessageUnreadController {
      * 清除所有未读消息提示
      * @return 响应结果，表示全部清除操作是否成功
      */
-    @PostMapping("/msg-unread/clear-all")
+    @PostMapping("/user/msg-unread/clear-all")
     public ResponseResult clearAllUnread() {
         Integer uid = currentUser.getUserId();
         //messageUnreadService.clearAllUnread(uid);
@@ -65,7 +64,7 @@ public class MessageUnreadController {
      * @param endTime   结束时间（时间戳）
      * @return 响应结果，包含按时间段过滤后的未读消息数
      */
-    @GetMapping("/msg-unread/column/time-range")
+    @GetMapping("/user/msg-unread/column/time-range")
     public ResponseResult getColumnUnreadInTimeRange(@RequestParam("column") String column,
                                                      @RequestParam("startTime") Long startTime,
                                                      @RequestParam("endTime") Long endTime) {
@@ -82,7 +81,7 @@ public class MessageUnreadController {
      * @param endTime   结束时间（时间戳）
      * @return 响应结果，包含按时间段过滤后的多列未读消息数
      */
-    @GetMapping("/msg-unread/columns/time-range")
+    @GetMapping("/user/msg-unread/columns/time-range")
     public ResponseResult getBatchUnreadInTimeRange(@RequestParam("columns") String[] columns,
                                                     @RequestParam("startTime") Long startTime,
                                                     @RequestParam("endTime") Long endTime) {
@@ -98,7 +97,7 @@ public class MessageUnreadController {
      * @param status    提醒状态，true表示开启提醒，false表示关闭提醒
      * @return 响应结果，表示设置操作是否成功
      */
-    @PostMapping("/msg-unread/set-notification")
+    @PostMapping("/user/msg-unread/set-notification")
     public ResponseResult setNotificationStatus(@RequestParam("column") String column,
                                                 @RequestParam("status") Boolean status) {
         Integer uid = currentUser.getUserId();
@@ -113,7 +112,7 @@ public class MessageUnreadController {
      * @param column    msg_unread表列名 "reply"/"at"/"love"/"system"/"whisper"/"dynamic"
      * @return 响应结果，包含消息提醒状态
      */
-    @GetMapping("/msg-unread/notification-status")
+    @GetMapping("/user/msg-unread/notification-status")
     public ResponseResult getNotificationStatus(@RequestParam("column") String column) {
         Integer uid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -127,7 +126,7 @@ public class MessageUnreadController {
      * @param status    提醒状态，true表示开启提醒，false表示关闭提醒
      * @return 响应结果，表示批量设置操作是否成功
      */
-    @PostMapping("/msg-unread/set-notification-batch")
+    @PostMapping("/user/msg-unread/set-notification-batch")
     public ResponseResult setBatchNotificationStatus(@RequestParam("columns") String[] columns,
                                                      @RequestParam("status") Boolean status) {
         Integer uid = currentUser.getUserId();
@@ -145,7 +144,7 @@ public class MessageUnreadController {
      * 获取当前用户所有列的未读消息提醒状态
      * @return 响应结果，包含所有列的消息提醒状态
      */
-    @GetMapping("/msg-unread/all-notification-status")
+    @GetMapping("/user/msg-unread/all-notification-status")
     public ResponseResult getAllNotificationStatuses() {
         Integer uid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -159,7 +158,7 @@ public class MessageUnreadController {
      * @param count     要重置的未读消息数
      * @return 响应结果，表示重置操作是否成功
      */
-    @PostMapping("/msg-unread/reset")
+    @PostMapping("/user/msg-unread/reset")
     public ResponseResult resetUnreadCount(@RequestParam("column") String column,
                                            @RequestParam("count") Integer count) {
         Integer uid = currentUser.getUserId();
@@ -175,7 +174,7 @@ public class MessageUnreadController {
      * @param counts    对应列的未读消息数
      * @return 响应结果，表示批量重置操作是否成功
      */
-    @PostMapping("/msg-unread/reset-batch")
+    @PostMapping("/user/msg-unread/reset-batch")
     public ResponseResult resetBatchUnreadCounts(@RequestParam("columns") String[] columns,
                                                  @RequestParam("counts") Integer[] counts) {
         Integer uid = currentUser.getUserId();
@@ -193,7 +192,7 @@ public class MessageUnreadController {
      * @param increment 增加的未读消息数
      * @return 响应结果，表示增加操作是否成功
      */
-    @PostMapping("/msg-unread/increment")
+    @PostMapping("/user/msg-unread/increment")
     public ResponseResult incrementUnreadCount(@RequestParam("column") String column,
                                                @RequestParam("increment") Integer increment) {
         Integer uid = currentUser.getUserId();
@@ -209,7 +208,7 @@ public class MessageUnreadController {
      * @param increments 对应列的增加值
      * @return 响应结果，表示批量增加操作是否成功
      */
-    @PostMapping("/msg-unread/increment-batch")
+    @PostMapping("/user/msg-unread/increment-batch")
     public ResponseResult incrementBatchUnreadCounts(@RequestParam("columns") String[] columns,
                                                      @RequestParam("increments") Integer[] increments) {
         Integer uid = currentUser.getUserId();
@@ -227,7 +226,7 @@ public class MessageUnreadController {
      * 获取当前用户全部消息未读数
      * @return
      */
-    @GetMapping("/msg-unread/all")
+    @GetMapping("/user/msg-unread/all")
     public ResponseResult getMsgUnread() {
         //System.out.println("已进入getMsgUnread");
         Integer uid = currentUser.getUserId();
@@ -240,7 +239,7 @@ public class MessageUnreadController {
      * 清除某一列的未读消息提示
      * @param column    msg_unread表列名 "reply"/"at"/"love"/"system"/"whisper"/"dynamic"
      */
-    @PostMapping("/msg-unread/clear")
+    @PostMapping("/user/msg-unread/clear")
     public void clearUnread(@RequestParam("column") String column) {
         Integer uid = currentUser.getUserId();
         messageUnreadService.clearOneUnread(uid, column);

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/user")
 public class FavoriteController {
     private final List<User> curretUserList = new ArrayList<>();
 
@@ -45,7 +44,7 @@ public class FavoriteController {
      * @param fid 收藏夹ID
      * @return 收藏夹的详细信息
      */
-    @GetMapping("/favorite/get")
+    @GetMapping("/user/favorite/get")
     public ResponseResult getFavoriteDetails(@RequestParam("fid") Integer fid) {
         ResponseResult responseResult = new ResponseResult();
         responseResult.setData(favoriteService.getFavorites(fid,true));
@@ -57,7 +56,7 @@ public class FavoriteController {
      * @param fid 收藏夹ID
      * @return 操作结果
      */
-    @PostMapping("/favorite/delete")
+    @PostMapping("/user/favorite/delete")
     public ResponseResult deleteFavorite(@RequestParam("fid") Integer fid) {
         Integer uid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -78,7 +77,7 @@ public class FavoriteController {
      * @param visible 新的可见性
      * @return 更新后的收藏夹信息
      */
-    @PostMapping("/favorite/update")
+    @PostMapping("/user/favorite/update")
     public ResponseResult updateFavorite(@RequestParam("fid") Integer fid,
                                          @RequestParam("title") String title,
                                          @RequestParam("desc") String desc,
@@ -95,7 +94,7 @@ public class FavoriteController {
      * @param vid 视频ID
      * @return 操作结果
      */
-    @PostMapping("/favorite/add-video")
+    @PostMapping("/user/favorite/add-video")
     public ResponseResult addVideoToFavorite(@RequestParam("fid") Integer fid,
                                              @RequestParam("vid") Integer vid) {
         Integer uid = currentUser.getUserId();
@@ -116,7 +115,7 @@ public class FavoriteController {
      * @param vid 视频ID
      * @return 操作结果
      */
-    @PostMapping("/favorite/remove-video")
+    @PostMapping("/user/favorite/remove-video")
     public ResponseResult removeVideoFromFavorite(@RequestParam("fid") Integer fid,
                                                   @RequestParam("vid") Integer vid) {
         Integer uid = currentUser.getUserId();
@@ -137,7 +136,7 @@ public class FavoriteController {
      * @param vids 视频ID列表
      * @return 操作结果
      */
-    @PostMapping("/favorite/batch-remove-videos")
+    @PostMapping("/user/favorite/batch-remove-videos")
     public ResponseResult batchRemoveVideosFromFavorite(@RequestParam("fid") Integer fid,
                                                         @RequestParam("vids") List<Integer> vids) {
         Integer uid = currentUser.getUserId();
@@ -157,7 +156,7 @@ public class FavoriteController {
      * @param uid 用户ID
      * @return 收藏的视频列表
      */
-    @GetMapping("/favorite/get-user-videos")
+    @GetMapping("/user/favorite/get-user-videos")
     public ResponseResult getUserFavoriteVideos(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
        // responseResult.setData(favoriteService.getFavoriteVideosByUserId(uid));
@@ -171,7 +170,7 @@ public class FavoriteController {
      * @param vid 视频ID
      * @return 操作结果
      */
-    @PostMapping("/favorite/move-video")
+    @PostMapping("/user/favorite/move-video")
     public ResponseResult moveVideoBetweenFavorites(@RequestParam("source_fid") Integer sourceFid,
                                                     @RequestParam("target_fid") Integer targetFid,
                                                     @RequestParam("vid") Integer vid) {
@@ -192,7 +191,7 @@ public class FavoriteController {
      * @param uid 用户ID
      * @return 视频数量
      */
-    @GetMapping("/favorite/count-videos")
+    @GetMapping("/user/favorite/count-videos")
     public ResponseResult countUserFavoriteVideos(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
       //  responseResult.setData(favoriteService.countFavoriteVideosByUserId(uid));
@@ -204,7 +203,7 @@ public class FavoriteController {
      * @param fid 收藏夹ID
      * @return 操作结果
      */
-    @PostMapping("/favorite/clear")
+    @PostMapping("/user/favorite/clear")
     public ResponseResult clearFavorite(@RequestParam("fid") Integer fid) {
         Integer uid = currentUser.getUserId();
         ResponseResult responseResult = new ResponseResult();
@@ -230,7 +229,7 @@ public class FavoriteController {
      * @param uid   被查看的用户ID
      * @return  包含收藏夹列表的响应对象
      */
-    @GetMapping("/favorite/get-all/user")
+    @GetMapping("/user/favorite/get-all/user")
     public ResponseResult getAllFavoritiesForUser(@RequestParam("uid") Integer uid) {
         Integer loginUid = currentUser.getUserId();
         //-------------------------------------------------------------------------------------------------
@@ -259,7 +258,7 @@ public class FavoriteController {
      * @param uid   被查看的用户ID
      * @return  包含收藏夹列表的响应对象
      */
-    @GetMapping("/favorite/get-all/visitor")
+    @GetMapping("/user/favorite/get-all/visitor")
     public ResponseResult getAllFavoritiesForVisitor(@RequestParam("uid") Integer uid) {
         ResponseResult responseResult = new ResponseResult();
         responseResult.setData(favoriteService.getFavorites(uid, false));
@@ -273,7 +272,7 @@ public class FavoriteController {
      * @param visible   是否公开 0否 1是
      * @return  包含新创建的收藏夹信息的响应对象
      */
-    @PostMapping("/favorite/create")
+    @PostMapping("/user/favorite/create")
     public ResponseResult createFavorite(@RequestParam("title") String title,
                                          @RequestParam("desc") String desc,
                                          @RequestParam("visible") Integer visible) {

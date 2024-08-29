@@ -14,7 +14,6 @@ import java.util.Random;
 
 
 @RestController
-@RequestMapping("/video")
 public class VideoStatusController {
 
 
@@ -29,7 +28,7 @@ public class VideoStatusController {
      * @param vid 视频ID
      * @return 返回虚假的视频播放统计数据
      */
-    @PostMapping("/video/stats/fake")
+    @PostMapping("/video/video/stats/fake")
     public ResponseResult getFakeVideoStats(@RequestParam("vid") Integer vid) {
         Map<String, Object> fakeStats = generateFakeStats(vid);
         return new ResponseResult(200, "Fake stats generated", fakeStats);
@@ -56,7 +55,7 @@ public class VideoStatusController {
      * @param vid 视频ID
      * @return 返回虚假的视频观看时间数据
      */
-    @PostMapping("/video/stats/fakeWatchTime")
+    @PostMapping("/video/video/stats/fakeWatchTime")
     public ResponseResult getFakeWatchTime(@RequestParam("vid") Integer vid) {
         Map<String, Object> fakeWatchTime = generateFakeWatchTime(vid);
         return new ResponseResult(200, "Fake watch time generated", fakeWatchTime);
@@ -81,7 +80,7 @@ public class VideoStatusController {
      * @param vid 视频ID
      * @return 返回虚假的用户交互数据
      */
-    @PostMapping("/video/stats/fakeUserInteraction")
+    @PostMapping("/video/video/stats/fakeUserInteraction")
     public ResponseResult getFakeUserInteraction(@RequestParam("vid") Integer vid) {
         Map<String, Object> fakeInteraction = generateFakeUserInteraction(vid);
         return new ResponseResult(200, "Fake user interaction generated", fakeInteraction);
@@ -108,7 +107,7 @@ public class VideoStatusController {
      * @param vid 视频ID
      * @return 返回统计数据的一致性检查结果
      */
-    @PostMapping("/video/stats/validate")
+    @PostMapping("/video/video/stats/validate")
     public ResponseResult validateVideoStats(@RequestParam("vid") Integer vid) {
         boolean isValid = validateStatsConsistency(vid);
         if (isValid) {
@@ -129,6 +128,8 @@ public class VideoStatusController {
         return random.nextBoolean();
     }
 
+
+    //--------------从这里开始就没有了
     /**
      * 模拟生成视频标签，用于分类统计
      * @param vid 视频ID
