@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 //服务名称和url
 //用于接收video微服务模块传输的对象
 //自动将调用路由到'video-service'
-@FeignClient(name = "videoService", url = "http://videoService:8092")
+@FeignClient(name = "video-service", url = "http://localhost:8092")
 public interface VideoServiceClient {
 
     //从videoService中寻找提供的服务
