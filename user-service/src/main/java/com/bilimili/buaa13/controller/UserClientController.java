@@ -1,5 +1,7 @@
 package com.bilimili.buaa13.controller;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.bilimili.buaa13.entity.*;
 import com.bilimili.buaa13.entity.dto.UserDTO;
@@ -49,22 +51,31 @@ public class UserClientController {
 
     //从userService中寻找提供的服务
     @GetMapping("/user/{uid}")
+    @SentinelResource(value = "getUserById",blockHandler = "getUserByIdHandler")
     public UserDTO getUserById(@PathVariable("uid") Integer uid){
         return userService.getUserByUId(uid);
     }
+    public UserDTO getUserByIdHandler (@PathVariable("uid") Integer uid, BlockException exception){
+        return new UserDTO();
+    }
 
     @PostMapping("/user/currentUser/getId")
+    @SentinelResource(value = "getCurrentUserId",blockHandler = "getCurrentUserIdHandler")
     public Integer getCurrentUserId(){
         return currentUser.getUserId();
     }
+    public Integer getCurrentUserIdHandler(BlockException exception){return 1;}
+
 
     @PostMapping("/user/currentUser/isAdmin")
+    @SentinelResource(value = "currentIsAdmin",blockHandler = "currentIsAdminHandler")
     public Boolean currentIsAdmin(){
         return currentUser.isAdmin();
     }
-
+    public Boolean getCurrentIsAdminHandler(BlockException exception){return false;}
 
     @PostMapping("/user/updateFavoriteVideo")
+    @SentinelResource(value = "updateFavoriteVideo", blockHandler = "updateFavoriteVideoHandler")
     public ResponseEntity<Void> updateFavoriteVideo(@RequestBody List<Map<String, Object>> result, @RequestParam("fid") Integer fid) {
         try (SqlSession sqlSession = sqlSessionFactory.openSession(ExecutorType.BATCH)) {
             result.stream().parallel().forEach(map -> {
@@ -77,8 +88,12 @@ public class UserClientController {
         }
         return ResponseEntity.ok().build();
     }
+    public ResponseEntity<Void> updateFavoriteVideoHandler(@RequestBody List<Map<String, Object>> result, @RequestParam("fid") Integer fid,BlockException exception) {
+        return ResponseEntity.badRequest().build();
+    }
 
     @PostMapping("/user/handle_comment")
+    @SentinelResource(value = "handleComment",blockHandler = "handleCommentHandler")
     public void handleComment(@RequestParam("uid") Integer uid,
                               @RequestParam("toUid") Integer toUid,
                               @RequestParam("id") Integer id){
@@ -97,9 +112,16 @@ public class UserClientController {
             }
         }
     }
+    public void handleCommentHandler(@RequestParam("uid") Integer uid,
+                                     @RequestParam("toUid") Integer toUid,
+                                     @RequestParam("id") Integer id,
+                                     BlockException exception){
+        System.out.println("commentService fallback" + uid+" "+toUid+" "+id);
+    }
 
     @PostMapping("/user/set/favorite")
-    ResponseResult setFavorite(@RequestParam("fid") Integer fid ,
+    @SentinelResource(value = "setFavorite",blockHandler = "setFavoriteHandler")
+    public ResponseResult setFavorite(@RequestParam("fid") Integer fid ,
                                @RequestParam("vid") String vids){
         ResponseResult responseResult = new ResponseResult();
         List<Integer> videoList = new ArrayList<>();
@@ -138,6 +160,11 @@ public class UserClientController {
             responseResult.setData(false);
         }
         return responseResult;
+    }
+    public ResponseResult setFavoriteHandler(@RequestParam("fid") Integer fid ,
+                                             @RequestParam("vid") String vids,
+                                             BlockException exception){
+        return new ResponseResult(404,"favorite fallback", null);
     }
 
     @GetMapping("/user/getUserByName/{account}")

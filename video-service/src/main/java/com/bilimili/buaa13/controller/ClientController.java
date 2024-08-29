@@ -1,6 +1,8 @@
 package com.bilimili.buaa13.controller;
 
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.bilimili.buaa13.entity.ResponseResult;
 import com.bilimili.buaa13.entity.Video;
 import com.bilimili.buaa13.entity.VideoStatus;
@@ -29,6 +31,7 @@ public class ClientController {
 
     // 通过视频ID获取视频详情
     @GetMapping("/{vid}")
+    @SentinelResource(value = "getVideoById",blockHandler = "getVideoByIdHandler")
     public ResponseResult getVideoById(@PathVariable("vid") Integer vid) {
         Video video = videoMapper.selectById(vid);
         if (video != null) {
@@ -37,15 +40,23 @@ public class ClientController {
             return new ResponseResult(404, "Video not found", null);
         }
     }
+    public ResponseResult getVideoByIdHandler(@PathVariable("vid") Integer vid, BlockException exception) {
+        return new ResponseResult(404, "Video not found fallback", null);
+    }
 
     // 通过视频ID获取视频状态
     @GetMapping("/videoStatus/{vid}")
+    @SentinelResource(value = "getVideoStatusById",blockHandler = "getVideoStatusByIdHandler")
     public VideoStatus getVideoStatusById(@PathVariable("vid") Integer vid) {
         return videoStatusService.getStatusByVideoId(vid);
+    }
+    public ResponseResult getVideoStatusByIdHandler(@PathVariable("vid") Integer vid, BlockException exception) {
+        return new ResponseResult(404, "VideoStatus not found fallback", null);
     }
 
     // 更新视频状态
     @PostMapping("/updateStatus")
+    @SentinelResource(value = "updateVideoStatus",blockHandler = "updateVideoStatusHandler")
     public ResponseResult updateVideoStatus(@RequestParam("vid") Integer vid,
                                             @RequestParam("statusType") String statusType,
                                             @RequestParam("increment") Boolean increment,
@@ -59,8 +70,17 @@ public class ClientController {
         }
     }
 
+    public ResponseResult updateVideoStatusHandler(@PathVariable("vid") Integer vid,
+                                                   @RequestParam("statusType") String statusType,
+                                                   @RequestParam("increment") Boolean increment,
+                                                   @RequestParam("count") Integer count,
+                                                   BlockException exception) {
+        return new ResponseResult(404, "update VideoStatus not found fallback", null);
+    }
+
     // 更新视频的点赞或差评数
     @PostMapping("/updateGoodAndBad")
+    @SentinelResource(value = "updateGoodAndBad",blockHandler = "updateGoodAndBadHandler")
     public ResponseResult updateGoodAndBad(@RequestParam("vid") Integer vid,
                                            @RequestParam("addGood") Boolean addGood) {
         try {
@@ -69,5 +89,20 @@ public class ClientController {
         } catch (Exception e) {
             return new ResponseResult(500, "update video status failed", null);
         }
+    }
+    public ResponseResult updateGoodAndBadHandler(@RequestParam("vid") Integer vid,
+                                                  @RequestParam("addGood") Boolean addGood,
+                                                  BlockException exception) {
+        return new ResponseResult(404, "update GoodBad not found fallback", null);
+    }
+
+    @GetMapping("/provider/sentinel/test/{message}")
+    @SentinelResource(value = "providerSentinelTest", blockHandler = "handlerBlockHandler")
+    public String providerSentinelTest(@PathVariable("message") String message) {
+        return "sentinel测试：" + message;
+    }
+
+    public String handlerBlockHandler(@PathVariable("message") String message, BlockException exception) {
+        return "providerSentinelTest服务不可用，" + "触发sentinel流控配置规则"+"\t"+"o(╥﹏╥)o";
     }
 }

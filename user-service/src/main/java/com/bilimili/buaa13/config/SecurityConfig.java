@@ -92,6 +92,10 @@ public class SecurityConfig {
                         // 请求放开接口
                         .antMatchers("/druid/**","/favicon.ico",
                                 "/**",
+                                "/provider/test/**",
+                                "/provider/test",
+                                "/provider/sentinel/test",
+                                "/provider/sentinel/test/**",
                                 "/user/user/account/register",
                                 "/user/account/register",
                                 "/user/account/login",

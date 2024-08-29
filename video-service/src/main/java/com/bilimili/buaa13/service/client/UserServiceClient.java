@@ -5,6 +5,7 @@ import com.bilimili.buaa13.entity.Comment;
 import com.bilimili.buaa13.entity.User;
 import com.bilimili.buaa13.entity.UserVideo;
 import com.bilimili.buaa13.entity.dto.UserDTO;
+import com.bilimili.buaa13.service.fallback.UserServiceClientFallback;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,7 +17,7 @@ import java.util.Map;
 //服务名称和url
 //用于接收video微服务模块传输的对象
 //自动将调用路由到'video-service'
-@FeignClient(name = "user-service", url = "http://localhost:8091",configuration = FeignConfig.class)
+@FeignClient(name = "user-service",configuration = FeignConfig.class,fallback = UserServiceClientFallback.class)
 public interface UserServiceClient {
 
     //从userService中寻找提供的服务
@@ -47,4 +48,5 @@ public interface UserServiceClient {
 
     @GetMapping("/user/getUserByName/{Account}")
     User getUserByName(@PathVariable("Account") String account);
+
 }

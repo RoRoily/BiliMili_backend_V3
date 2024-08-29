@@ -7,7 +7,7 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 
 @SpringBootApplication
 @EnableDiscoveryClient
-@EnableFeignClients
+@EnableFeignClients("com.bilimili.buaa13.service.client")
 public class VideoServiceApplication {
 
     public static void main(String[] args) {
