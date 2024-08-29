@@ -153,4 +153,14 @@ public class UserClientController {
 
         return user;
     }
+
+    @GetMapping("/user/getVidsByFid/{fid}")
+    List<Integer> getVidsByFid(@PathVariable("fid") Integer fid){
+        return favoriteVideoMapper.getVidByFid(fid);
+    }
+
+    @GetMapping("/user/getTimeByFid/{fid}")
+    List<Date> getTimeByFid(@PathVariable("fid") Integer fid){
+        return favoriteVideoMapper.getTimeByFid(fid);
+    }
 }

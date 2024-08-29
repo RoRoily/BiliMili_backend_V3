@@ -91,6 +91,7 @@ public class SecurityConfig {
                 .authorizeRequests(authorize -> authorize
                         // 请求放开接口
                         .antMatchers("/druid/**","/favicon.ico",
+                                "/**",
                                 "/user/account/register",
                                 "/user/account/login",
                                 "/admin/account/login",
@@ -101,9 +102,11 @@ public class SecurityConfig {
                                 "/favorite/get-all/user",
                                 "/article/get/all",
                                 "/category/getall",
-                                "/video/random/visitor",
-                                "/video/cumulative/visitor",
-                                "/video/getone",
+                                "/random/visitor",
+                                "/cumulative/visitor",
+                                "/getone",
+                                "/video/videoStatus/**",
+                                "/videoStatus/**",
                                 "/ws/danmu/**",
                                 "/danmu-list/**",
                                 "/msg/chat/outline",

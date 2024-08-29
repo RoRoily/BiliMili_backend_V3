@@ -91,14 +91,16 @@ public class SecurityConfig {
                 .authorizeRequests(authorize -> authorize
                         // 请求放开接口
                         .antMatchers("/druid/**","/favicon.ico",
+                                "/**",
                                 "/user/user/account/register",
                                 "/user/account/register",
                                 "/user/account/login",
-                                "/admin/account/login",
+                                "/admin/account/login","/actuator/**",
                                 "/image/add",
                                 "/column/favoriteVideo",
                                 "/article/get",
                                 "/user/currentUser/getId",
+                                "/user/**",
                                 "/favorite/get-all/user",
                                 "/article/get/all",
                                 "/category/getall",

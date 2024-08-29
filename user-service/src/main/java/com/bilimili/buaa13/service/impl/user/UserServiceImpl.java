@@ -96,6 +96,7 @@ public class UserServiceImpl implements UserService {
             for(int i=0;i< setSize;++i){
                 int vid = (int)listSet.get(i);
                 VideoStatus videoStatus = videoServiceClient.getVideoStatusById(vid);
+                System.out.println("getUserByUID+video: "+videoStatus);
                 list.add(videoStatus);
             }
             //遍历查找用户播放，点赞总数据

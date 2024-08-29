@@ -40,13 +40,8 @@ public class ClientController {
 
     // 通过视频ID获取视频状态
     @GetMapping("/videoStatus/{vid}")
-    public ResponseResult getVideoStatusById(@PathVariable("vid") Integer vid) {
-        VideoStatus videoStatus = videoStatusService.getStatusByVideoId(vid);
-        if (videoStatus != null) {
-            return new ResponseResult(200, "OK", videoStatus);
-        } else {
-            return new ResponseResult(404, "Video status not found", null);
-        }
+    public VideoStatus getVideoStatusById(@PathVariable("vid") Integer vid) {
+        return videoStatusService.getStatusByVideoId(vid);
     }
 
     // 更新视频状态
