@@ -98,6 +98,7 @@ public class SecurityConfig {
                                 "/image/add",
                                 "/column/favoriteVideo",
                                 "/article/get",
+                                "/user/currentUser/getId",
                                 "/favorite/get-all/user",
                                 "/article/get/all",
                                 "/category/getall",

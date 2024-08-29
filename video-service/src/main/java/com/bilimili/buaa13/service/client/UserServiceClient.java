@@ -1,5 +1,6 @@
 package com.bilimili.buaa13.service.client;
 
+import com.bilimili.buaa13.config.FeignConfig;
 import com.bilimili.buaa13.entity.Comment;
 import com.bilimili.buaa13.entity.User;
 import com.bilimili.buaa13.entity.UserVideo;
@@ -15,7 +16,7 @@ import java.util.Map;
 //服务名称和url
 //用于接收video微服务模块传输的对象
 //自动将调用路由到'video-service'
-@FeignClient(name = "user-service", url = "http://localhost:8091")
+@FeignClient(name = "user-service", url = "http://localhost:8091",configuration = FeignConfig.class)
 public interface UserServiceClient {
 
     //从userService中寻找提供的服务
