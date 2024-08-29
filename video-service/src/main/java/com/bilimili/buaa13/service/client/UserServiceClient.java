@@ -1,6 +1,7 @@
 package com.bilimili.buaa13.service.client;
 
 import com.bilimili.buaa13.entity.Comment;
+import com.bilimili.buaa13.entity.User;
 import com.bilimili.buaa13.entity.UserVideo;
 import com.bilimili.buaa13.entity.dto.UserDTO;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -42,4 +43,7 @@ public interface UserServiceClient {
 
     @GetMapping("/user/getTimeByFid/{fid}")
     List<Date> getTimeByFid(@PathVariable("fid") Integer fid);
+
+    @GetMapping("/user/getUserByName/{Account}")
+    User getUserByName(@PathVariable("Account") String account);
 }

@@ -6,6 +6,7 @@ import com.bilimili.buaa13.entity.dto.UserDTO;
 import com.bilimili.buaa13.im.IMServer;
 import com.bilimili.buaa13.mapper.FavoriteMapper;
 import com.bilimili.buaa13.mapper.FavoriteVideoMapper;
+import com.bilimili.buaa13.mapper.UserMapper;
 import com.bilimili.buaa13.service.favorite.FavoriteVideoService;
 import com.bilimili.buaa13.service.message.MessageUnreadService;
 import com.bilimili.buaa13.service.user.UserService;
@@ -43,6 +44,8 @@ public class UserClientController {
     private FavoriteMapper favoriteMapper;
     @Autowired
     private FavoriteVideoService favoriteVideoService;
+    @Autowired
+    private UserMapper userMapper;
 
     //从userService中寻找提供的服务
     @GetMapping("/user/{uid}")
@@ -135,5 +138,19 @@ public class UserClientController {
             responseResult.setData(false);
         }
         return responseResult;
+    }
+
+    @GetMapping("/user/getUserByName/{account}")
+    User getUserByName(@PathVariable("account") String account){
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("account", account);
+        queryWrapper.ne("state", 2);
+        User user = userMapper.selectOne(queryWrapper);
+        if (user == null) {
+            System.out.println("found user by name failed");
+            return null;
+        }
+
+        return user;
     }
 }
